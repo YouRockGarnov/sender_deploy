@@ -7,6 +7,7 @@ app = Flask(__name__)
 def processing():
     import unittest
     if __name__ == '__main__':
+        print('unitests started')
         unittest.main()
         return 'ok'
 
