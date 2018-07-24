@@ -4,7 +4,7 @@ import logging
 logger = logging.getLogger('spam_application')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler('../log.txt')
+fh = logging.FileHandler('../tattoolog.txt')
 fh.setLevel(logging.DEBUG)
 # create console handler with a higher log level
 ch = logging.StreamHandler()
