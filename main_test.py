@@ -8,6 +8,9 @@ def processing():
     import unittest
     if __name__ == '__main__':
         unittest.main()
+        return 'ok'
+
+    return 'some problems'
 
 @app.route('/', methods=['GET'])
 def index():
