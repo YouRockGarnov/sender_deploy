@@ -9,6 +9,6 @@ def processing():
     if __name__ == '__main__':
         unittest.main()
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def index():
     return 'The app is running tests'
