@@ -5,10 +5,15 @@ from bots.vkbot import VKBot
 from tools.log import logger
 from configs.config_vkbot import token
 from db.mymodels import db
+import db.creating_scratch as creating_scratch
 
 app = Flask(__name__)
 
 vkbot = VKBot(token)
+
+@app.route('/create_db', methods=['GET'])
+def create_db():
+    creating_scratch.create_db()
 
 @app.before_request
 def before_request():
