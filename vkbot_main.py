@@ -15,12 +15,11 @@ vkbot = VKBot(token)
 def create_db():
     creating_scratch.create_db()
 
-@app.before_request
-def before_request():
-    db.connect()
 
 @app.route('/', methods=['POST'])
 def processing():
+    db.connect()
+
     if DEBUG:
         logger.info('Run in debug.')
 
