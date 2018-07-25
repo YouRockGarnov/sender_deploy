@@ -6,8 +6,7 @@ from tools.log import logger
 from configs.config_vkbot import token
 from db.mymodels import db
 import db.creating_scratch as creating_scratch
-
-app = Flask(__name__)
+from app import app
 
 vkbot = VKBot(token)
 
