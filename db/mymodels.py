@@ -3,11 +3,11 @@ from peewee import IntegerField
 from peewee import ForeignKeyField
 from peewee import TextField
 from peewee import CharField
-from peewee import SqliteDatabase
+from peewee import PostgresqlDatabase
 from peewee import DateTimeField
 from datetime import datetime
 
-db = SqliteDatabase('../sender.sqlite')
+db = PostgresqlDatabase('../sender.db')
 
 class TargetGroup(Model):
     vkid = IntegerField()
