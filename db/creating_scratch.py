@@ -1,29 +1,39 @@
 from peewee import PostgresqlDatabase
 from db.mymodels import AdminPage, TargetGroup, UserPage, SenderPage
+from vkbot_main import app
 
 def create_db():
-    import psycopg2
-    import urllib.parse as urlparse
     import os
-    from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+    import urllib.parse as urlparse
+    import psycopg2
+    from flask import Flask
+    from flask_peewee.db import Database
 
-    url = urlparse.urlparse(os.environ['DATABASE_URL'])
-    dbname = url.path[1:]
-    user = url.username
-    password = url.password
-    host = url.hostname
-    port = url.port
+    if 'HEROKU' in os.environ:
+        DEBUG = False
+        urlparse.uses_netloc.append('postgres')
+        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        DATABASE = {
+            'engine': 'peewee.PostgresqlDatabase',
+            'name': url.path[1:],
+            'user': url.username,
+            'password': url.password,
+            'host': url.hostname,
+            'port': url.port,
+        }
+    else:
+        DEBUG = True
+        DATABASE = {
+            'engine': 'peewee.PostgresqlDatabase',
+            'name': 'framingappdb',
+            'user': 'postgres',
+            'password': 'postgres',
+            'host': 'localhost',
+            'port': 5432,
+            'threadlocals': True
+        }
 
-    db = psycopg2.connect(
-        dbname=dbname,
-        user=user,
-        password=password,
-        host=host,
-        port=port
-    )
-
-    db.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-
+    db = Database(app)
     db.connect()
     print('CONNECTED')
     # TODO сделать так, чтобы дубликаты не добавлялись
