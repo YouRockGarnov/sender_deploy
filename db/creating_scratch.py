@@ -1,9 +1,8 @@
 from peewee import PostgresqlDatabase, Database, Proxy
 from db.mymodels import AdminPage, TargetGroup, UserPage, SenderPage
+from db.mymodels import db_proxy
 
 def create_db():
-    db_proxy = Proxy()
-
     import urllib.parse as urlparse, psycopg2, os
     urlparse.uses_netloc.append('postgres')
     url = urlparse.urlparse(os.environ["DATABASE_URL"])
@@ -13,7 +12,7 @@ def create_db():
     db_proxy.connect()
     print('CONNECTED')
     # TODO сделать так, чтобы дубликаты не добавлялись
-    db_proxy.create_tables([AdminPage, TargetGroup, UserPage, SenderPage])
+    db_proxy.create_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
 
     yuri = AdminPage(vkid=142872618)
     yuri.save()

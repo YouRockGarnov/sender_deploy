@@ -3,11 +3,11 @@ from peewee import IntegerField
 from peewee import ForeignKeyField
 from peewee import TextField
 from peewee import CharField
-from peewee import PostgresqlDatabase
+from peewee import PostgresqlDatabase, Proxy
 from peewee import DateTimeField
 from datetime import datetime
 
-db = PostgresqlDatabase('../sender.db')
+db_proxy = Proxy()
 
 class TargetGroup(Model):
     vkid = IntegerField()
@@ -16,7 +16,7 @@ class TargetGroup(Model):
     message_count = IntegerField()
 
     class Meta:
-        database = db
+        database = db_proxy
 
 
 class AdminPage(Model):
@@ -24,7 +24,7 @@ class AdminPage(Model):
     # target_group = ForeignKeyField(TargetGroup, backref='id')
 
     class Meta:
-        database = db
+        database = db_proxy
 
 
 class UserPage(Model):
@@ -33,7 +33,7 @@ class UserPage(Model):
     status = CharField() # 'not noticed', 'active'
 
     class Meta:
-        database = db
+        database = db_proxy
 
 
 class SenderPage(Model):
@@ -44,4 +44,4 @@ class SenderPage(Model):
                                             # При создании страницы обновляет message_count и update_time
 
     class Meta:
-        database = db
+        database = db_proxy
