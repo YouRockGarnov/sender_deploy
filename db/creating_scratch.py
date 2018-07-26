@@ -19,6 +19,8 @@ def create_db():
 
     db_proxy.close()
 
+    return 'DB is created!'
+
 def reset_db():
     import os, psycopg2, urllib.parse as urlparse  # CHECK
     urlparse.uses_netloc.append('postgres')
