@@ -2,7 +2,7 @@ from bots.bot_base import BotBase
 import configs.config_vkbot as config
 import tools.vkapi as vkapi
 from tools.log import logger
-from db.mymodels import db
+from db.mymodels import db_proxy
 
 
 class VKBot(BotBase):

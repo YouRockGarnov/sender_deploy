@@ -7,7 +7,7 @@ import time
 
 class AdminRequestsTest(unittest.TestCase):
     def test_not_command_mes(self):
-        db.close()
+        db_proxy.close()
 
         vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
@@ -17,7 +17,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(vkapi.sended_message, 'Я не понял команды. Попробуйте еще раз.')
 
     def test_add_admin(self): # working
-        db.close()
+        db_proxy.close()
 
         query = AdminPage.select().where(AdminPage.vkid == 481116745)
         if query.exists():
@@ -35,7 +35,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(yuri.vkid, 481116745)
 
     def test_add_group(self): # working
-        db.close()
+        db_proxy.close()
 
         group_id = 168619478
         query = TargetGroup.select().where(TargetGroup.vkid == group_id)
@@ -55,7 +55,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(tatbottoo.vkid, group_id)
 
     def test_change_mess_count(self): #working
-        db.close()
+        db_proxy.close()
 
         group_id = 168619478
         new_mes_count = 15
@@ -74,7 +74,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(query.get().message_count, new_mes_count)
 
     def test_add_sender(self):
-        db.close()
+        db_proxy.close()
 
         sender = 'patlin'
         sender_id = vkapi.to_vkid(sender)
@@ -97,7 +97,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(sender.vkid, sender_id)
 
     def test_change_text(self):
-        db.close()
+        db_proxy.close()
 
         group_id = 168619478
         new_text = 'Это новый текст. Ничего интересного.'
@@ -116,7 +116,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(query.get().text, new_text)
 
     def test_run_sender(self):
-        db.close()
+        db_proxy.close()
 
         sender = 'patlin'
         sender_id = vkapi.to_vkid(sender)
@@ -132,7 +132,7 @@ class AdminRequestsTest(unittest.TestCase):
 
 
     def test_consumer_reply(self):
-        db.close()
+        db_proxy.close()
 
         user = 'id481116745'
         user_id = vkapi.to_vkid(user)
@@ -148,7 +148,7 @@ class AdminRequestsTest(unittest.TestCase):
         self.assertEqual(user_page.status, 'active')
 
     def test_consumer_mess(self):
-        db.close()
+        db_proxy.close()
 
         screenname = 'https://vk.com/paulpalich'
         consumer_id = vkapi.message_to_vkid(screenname)

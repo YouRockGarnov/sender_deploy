@@ -4,7 +4,7 @@ from tools.debug import DEBUG
 from bots.vkbot import VKBot
 from tools.log import logger
 from configs.config_vkbot import token
-from db.mymodels import db
+from db.mymodels import db_proxy
 import db.creating_scratch as creating_scratch
 from app import app
 
@@ -17,7 +17,7 @@ def create_db():
 
 @app.route('/', methods=['POST'])
 def processing():
-    db.connect()
+    db_proxy.connect()
 
     if DEBUG:
         logger.info('Run in debug.')
@@ -44,12 +44,12 @@ def processing():
 
 @app.after_request
 def after_request(response):
-    db.close()
+    db_proxy.close()
     return response
 
 
 def debug_processing(data):
-    db.connect(True)
+    db_proxy.connect(True)
     logger.info('in processing')
 
     # Вконтакте в своих запросах всегда отправляет поле типа
@@ -65,7 +65,7 @@ def debug_processing(data):
         vkbot.reply_to_message(data)
         return 'ok'
 
-    db.close()
+    db_proxy.close()
     return 'ok'
 
 #print(debug_processing({"type":"message_new","object":{"id":43, "date":1492522323,
