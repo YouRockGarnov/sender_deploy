@@ -12,7 +12,7 @@ vkbot = VKBot(token)
 
 @app.route('/create_db', methods=['GET'])
 def create_db():
-    creating_scratch.create_db()
+    return creating_scratch.create_db()
 
 
 @app.route('/', methods=['POST'])
