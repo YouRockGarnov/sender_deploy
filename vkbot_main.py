@@ -22,6 +22,22 @@ def after_request(response):
     g.db.close()
     return response
 
+@app.route('/setDEBUG_True', methods=['GET'])
+def setDEBUG_True():
+    DEBUG = True
+    return 'DEBUG = True'
+
+@app.route('/setDEBUG_False', methods=['GET'])
+def setDEBUG_False():
+    DEBUG = False
+    return 'DEBUG = False'
+
+@app.route('/getDEBUG_Flag', methods=['GET'])
+def get_debug():
+    print(DEBUG)
+    return 'DEBUG = {0}'.format(DEBUG)
+
+
 @app.route('/create_db', methods=['GET'])
 def create_db():
     return creating_scratch.create_db()
