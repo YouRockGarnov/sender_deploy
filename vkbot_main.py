@@ -7,8 +7,19 @@ from configs.config_vkbot import token
 from db.mymodels import db_proxy
 import db.creating_scratch as creating_scratch
 from app import app
+from flask import g
 
 vkbot = VKBot(token)
+
+@app.before_request
+def before_request():
+    g.db = db_proxy
+    g.db.connect()
+
+@app.after_request
+def after_request(response):
+    g.db.close()
+    return response
 
 @app.route('/create_db', methods=['GET'])
 def create_db():
