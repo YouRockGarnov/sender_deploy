@@ -1,19 +1,19 @@
 from tests.request_test import AdminRequestsTest
 from db.mymodels import *
-
 from flask import Flask, json, request
-app = Flask(__name__)
+from app import app
 
-@app.route('/', methods=['POST'])
-def processing():
+
+@app.route('/test', methods=['POST'])
+def test():
     import unittest
     print('unitests started')
     unittest.main()
     print('unitests ended')
     return 'ok'
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/test', methods=['GET'])
+def test_index():
     return 'The app is running tests'
 
 local_debug = False
