@@ -28,8 +28,6 @@ def create_db():
 
 @app.route('/', methods=['POST'])
 def processing():
-    db_proxy.connect()
-
     if DEBUG:
         logger.info('Run in debug.')
 
