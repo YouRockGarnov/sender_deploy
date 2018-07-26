@@ -1,4 +1,4 @@
-from peewee import PostgresqlDatabase
+from peewee import PostgresqlDatabase, Database
 from db.mymodels import AdminPage, TargetGroup, UserPage, SenderPage
 
 def create_db():
@@ -7,7 +7,7 @@ def create_db():
 
 
 
-    db = PostgresqlDatabase(app)
+    db = Database(app)
     db.connect()
     print('CONNECTED')
     # TODO сделать так, чтобы дубликаты не добавлялись
