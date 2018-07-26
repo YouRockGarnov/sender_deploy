@@ -14,11 +14,14 @@ def create_db():
     # TODO сделать так, чтобы дубликаты не добавлялись
     db_proxy.create_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
 
+    print('before AdminPage')
     yuri = AdminPage(vkid=142872618)
     yuri.save()
 
+    print('before db.close()')
     db_proxy.close()
 
+    print('before return')
     return 'DB is created!'
 
 def reset_db():
