@@ -10,15 +10,18 @@ def test():
     #     if callable(item):
     #         item()
 
-    from tests.request_test import AdminRequestsTest
-    test = AdminRequestsTest()
-    test.run()
+    import tests.server_tests as tests
 
-local_debug = False
-if (local_debug):
+    for i in dir(tests):
+        item = getattr(tests,i)
+        if callable(item) and repr(item).find('test_') != -1:
+            print(repr(item))
+            item()
+
+import os
+if not ('HEROKU' in os.environ):
     import unittest
     print('unitests started')
-    AdminPage.create(vkid=111)
     print(AdminPage.get(AdminPage.vkid == 142872618))
     unittest.main()
     print('unitests ended')

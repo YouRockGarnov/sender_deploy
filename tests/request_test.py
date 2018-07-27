@@ -1,3 +1,5 @@
+import tools.debug
+import tools.debug_process
 import vkbot_main
 import unittest
 import tools.vkapi as vkapi
@@ -9,7 +11,7 @@ class AdminRequestsTest(unittest.TestCase):
     def test_not_command_mes(self):
         db_proxy.close()
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title": "Это тестовое сообщение",
                                                                        "body": "Пересланное"}})
@@ -24,7 +26,7 @@ class AdminRequestsTest(unittest.TestCase):
             admin = query.get()
             admin.delete_instance()
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title": "Добавь админа https://vk.com/id481116745"}})
 
@@ -44,7 +46,7 @@ class AdminRequestsTest(unittest.TestCase):
             admin = query.get()
             admin.delete_instance()
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title": "Добавь группу https://vk.com/tatbottoo"}})
 
@@ -63,7 +65,7 @@ class AdminRequestsTest(unittest.TestCase):
         query = TargetGroup.select().where(TargetGroup.vkid == group_id)
         self.assertTrue(query.exists())
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title":
                                                                            "колво сообщений у https://vk.com/tatbottoo "
@@ -82,7 +84,7 @@ class AdminRequestsTest(unittest.TestCase):
         query = SenderPage.select().where(SenderPage.vkid == sender_id)
         self.assertTrue(not query.exists())
 
-        vkbot_main.debug_processing({"type": "message_new",
+        tools.debug_processing.debug_processing({"type": "message_new",
                                      "object": {"id": 43,
                                                 "date": 1492522323,
                                                 "out": 0, "user_id": 142872618, "read_state": 0,
@@ -105,11 +107,11 @@ class AdminRequestsTest(unittest.TestCase):
         query = TargetGroup.select().where(TargetGroup.vkid == group_id)
         self.assertTrue(query.exists())
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title":
                                                                            "Текст у https://vk.com/tatbottoo \"{0}\""
-                                                                           .format(str(new_text))}})
+                                                .format(str(new_text))}})
 
         query = TargetGroup.select().where(TargetGroup.vkid == group_id)
         self.assertTrue(query.exists())
@@ -123,7 +125,7 @@ class AdminRequestsTest(unittest.TestCase):
 
         self.assertTrue(vkbot_main.vkbot._sender._state == State.stopped)
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": 142872618, "read_state": 0,
                                                                        "title":
                                                                            "запусти рассылку"}})
@@ -139,7 +141,7 @@ class AdminRequestsTest(unittest.TestCase):
 
         time.sleep(1)
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": user_id, "read_state": 0,
                                                                        "title":
                                                                            "Ну окей, меня заинтересовал ваш тату-салон."}})
@@ -153,7 +155,7 @@ class AdminRequestsTest(unittest.TestCase):
         screenname = 'https://vk.com/paulpalich'
         consumer_id = vkapi.message_to_vkid(screenname)
 
-        vkbot_main.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
+        tools.debug_processing.debug_processing({"type": "message_new", "object": {"id": 43, "date": 1492522323,
                                                                        "out": 0, "user_id": consumer_id, "read_state": 0,
                                                                        "title":
                                                                            "Это случайное сообщение от случайного чувака!!!"}})
