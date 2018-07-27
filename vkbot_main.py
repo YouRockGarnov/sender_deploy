@@ -8,7 +8,7 @@ from db.mymodels import db_proxy
 import db.creating_scratch as creating_scratch
 from app import app
 from flask import g
-from main_test import test, test_index
+from main_test import test
 
 vkbot = VKBot(token)
 
