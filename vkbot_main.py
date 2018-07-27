@@ -24,11 +24,13 @@ def after_request(response):
 
 @app.route('/setDEBUG_True', methods=['GET'])
 def setDEBUG_True():
+    global DEBUG
     DEBUG = True
     return 'DEBUG = True'
 
 @app.route('/setDEBUG_False', methods=['GET'])
 def setDEBUG_False():
+    global DEBUG
     DEBUG = False
     return 'DEBUG = False'
 
@@ -49,6 +51,7 @@ def processing():
         logger.info('Run in debug.')
 
     logger.info('in processing')
+    logger.info('data = {0}'.format(request.data))
 
     data = json.loads(request.data)
 
