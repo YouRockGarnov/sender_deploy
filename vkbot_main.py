@@ -57,7 +57,7 @@ def processing():
     bindata = request.data
     logger.info('data = {0}'.format(bindata))
 
-    data = json.loads(request.data)
+    data = json.loads(bindata)
 
     # Вконтакте в своих запросах всегда отправляет поле типа
     if 'type' not in data.keys():
