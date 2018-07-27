@@ -8,6 +8,7 @@ import db.creating_scratch as creating_scratch
 from db.creating_scratch import init_db
 from app import app
 from flask import g
+from tools.debug import DEBUG
 
 vkbot = VKBot(token)
 
@@ -75,6 +76,10 @@ def processing():
 def after_request(response):
     db_proxy.close()
     return response
+
+import os
+if not ('HEROKU' in os.environ):
+    get_debug()
 
 #print(debug_processing({"type":"message_new","object":{"id":43, "date":1492522323,
  #                       "out":0, "user_id":142872618, "read_state":0, "title":"Это тестовое сообщение", "body":"Пересланное"}}))
