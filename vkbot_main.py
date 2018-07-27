@@ -53,7 +53,9 @@ def processing():
         logger.info('Run in debug.')
 
     logger.info('in processing')
-    logger.info('data = {0}'.format(request.data))
+
+    bindata = request.data
+    logger.info('data = {0}'.format(bindata))
 
     data = json.loads(request.data)
 
