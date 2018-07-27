@@ -5,6 +5,7 @@ from tools.log import logger
 from configs.config_vkbot import token
 from db.mymodels import db_proxy
 import db.creating_scratch as creating_scratch
+from db.creating_scratch import init_db
 from app import app
 from flask import g
 
@@ -12,6 +13,7 @@ vkbot = VKBot(token)
 
 @app.before_request
 def before_request():
+    init_db()
     g.db = db_proxy
     g.db.connect()
 
