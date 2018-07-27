@@ -5,11 +5,14 @@ from app import app
 
 @app.route('/test', methods=['GET'])
 def test():
-    import tests.request_test as tests
-    for i in dir(tests):
-        item = getattr(tests,i)
-        if callable(item):
-            item()
+    # for i in dir(tests):
+    #     item = getattr(tests,i)
+    #     if callable(item):
+    #         item()
+
+    from tests.request_test import AdminRequestsTest
+    test = AdminRequestsTest()
+    test.run()
 
 local_debug = False
 if (local_debug):
