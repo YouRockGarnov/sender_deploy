@@ -8,24 +8,34 @@ from sender.Sender import State
 import time
 from flask import g
 import requests
+from tools.log import logger
 
 main_url = 'https://tattoo-sender.herokuapp.com'
 
 def assertTrue(expr, funcname):
     if not expr:
-        print('Not true in {0}'.format(funcname))
+        print('!! Not true in {0} !!!'.format(funcname))
+        exit(1)
 
 def assertEqual(a, b, funcname):
     if a != b:
         print('{0} != {1} in {2}!'.format(a, b, funcname))
+        exit(1)
+
+def make_req(message):
+    response = requests.post(main_url, message)
+
+    if response != 200:
+        logger.error('POST request to {0} with message = {1} returned {2}.'.format(main_url, message, response))
+        exit(1)
 
 def test_not_command_mes():
     g.db.close()
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title": "Это тестовое сообщение",
-                                                                   "body": "Пересланное"}})
+    make_req('"type": "message_new", '
+              '"object": {"id": 43, "date": 1492522323, "out": 0, '
+              '"user_id": 142872618, "read_state": 0, "title": '
+              '"Это тестовое сообщение","body": "Пересланное"}}')
 
     assertEqual(vkapi.sended_message, 'Я не понял команды. Попробуйте еще раз.', __name__)
 
@@ -37,9 +47,9 @@ def test_add_admin(): # working
         admin = query.get()
         admin.delete_instance()
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title": "Добавь админа https://vk.com/id481116745"}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                                                   '"title": "Добавь админа https://vk.com/id481116745}}')
 
     query = AdminPage.select().where(AdminPage.vkid == 481116745)
     assertTrue(query.exists(), __name__)
@@ -57,9 +67,9 @@ def test_add_group(): # working
         admin = query.get()
         admin.delete_instance()
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title": "Добавь группу https://vk.com/tatbottoo"}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                                                   '"title": "Добавь группу https://vk.com/tatbottoo"}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
@@ -76,11 +86,11 @@ def test_change_mess_count(): #working
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title":
-                                                                       "колво сообщений у https://vk.com/tatbottoo "
-                                                                       + str(new_mes_count)}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                                                   '"title":'
+                                                                       '"колво сообщений у https://vk.com/tatbottoo {0}"'
+             '}}'.format(new_mes_count))
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
@@ -95,13 +105,12 @@ def test_add_sender():
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
     assertTrue(not query.exists(), __name__)
 
-    requests.post(main_url, {"type": "message_new",
-                                 "object": {"id": 43,
-                                            "date": 1492522323,
-                                            "out": 0, "user_id": 142872618, "read_state": 0,
-                                            "title":
-                                                "добавить страницу "
-                                                + str(sender)}})
+    make_req('{"type": "message_new",'
+                                 '"object": {"id": 43,'
+                                 '"date": 1492522323,'
+                                            '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                            '"title":'
+                                                '"добавить страницу {0}")}}'.format(str(sender)))
 
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
     assertTrue(query.exists(), __name__)
@@ -118,11 +127,11 @@ def test_change_text():
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title":
-                                                                       "Текст у https://vk.com/tatbottoo \"{0}\""
-                                            .format(str(new_text))}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                           '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                           '"title":'
+                                               '"Текст у https://vk.com/tatbottoo \"{0}\""'
+                                            '}}'.format(str(new_text)))
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
@@ -136,10 +145,10 @@ def test_run_sender():
 
     assertTrue(vkbot_main.vkbot._sender._state == State.stopped, __name__)
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": 142872618, "read_state": 0,
-                                                                   "title":
-                                                                       "запусти рассылку"}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                                                   '"title":'
+                                                                       '"запусти рассылку"}}')
 
     assertEqual(vkbot_main.vkbot._sender._state, State.waiting, __name__)
 
@@ -152,10 +161,10 @@ def test_consumer_reply():
 
     time.sleep(1)
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": user_id, "read_state": 0,
-                                                                   "title":
-                                                                       "Ну окей, меня заинтересовал ваш тату-салон."}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": user_id, "read_state": 0,'
+                                                                   '"title":'
+                                                                       '"Ну окей, меня заинтересовал ваш тату-салон."}}')
 
     user_page = UserPage.get(UserPage.vkid == user_id)
     assertEqual(user_page.status, 'active', __name__)
@@ -166,9 +175,9 @@ def test_consumer_mess():
     screenname = 'https://vk.com/paulpalich'
     consumer_id = vkapi.message_to_vkid(screenname)
 
-    requests.post(main_url, {"type": "message_new", "object": {"id": 43, "date": 1492522323,
-                                                                   "out": 0, "user_id": consumer_id, "read_state": 0,
-                                                                   "title":
-                                                                       "Это случайное сообщение от случайного чувака!!!"}})
+    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                                                                   '"out": 0, "user_id": consumer_id, "read_state": 0,'
+                                                                   '"title":'
+                                                                       '"Это случайное сообщение от случайного чувака!!!"}}')
 
     assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__)
