@@ -23,7 +23,7 @@ def assertEqual(a, b, funcname):
         exit(1)
 
 def make_req(message):
-    response = requests.post(main_url, message)
+    response = requests.post(main_url, message.encode())
 
     if response != 200:
         logger.error('POST request to {0} with message = {1} returned {2}.'.format(main_url, message, response))
