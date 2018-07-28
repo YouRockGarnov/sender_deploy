@@ -70,5 +70,6 @@ class Sender:
         vkapi.send_message(to_id, from_token, message)
 
     def something_is_changed(self):
-        self._state = State.rerun
+        if self._state != State.stopped:
+            self._state = State.rerun
 
