@@ -144,7 +144,7 @@ def test_run_sender():
     sender = 'patlin'
     sender_id = vkapi.to_vkid(sender)
 
-    assertTrue(vkbot_main.vkbot._sender._state == State.stopped, __name__)
+    assertEqual(vkbot_main.vkbot._sender._state, State.stopped, __name__)
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
