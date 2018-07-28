@@ -132,7 +132,7 @@ def test_change_text():
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
                                    '"title": "Текст у https://vk.com/tatbottoo \"' +
-                                    str(new_text) + '"}}')
+                                    str(new_text) + '""}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)

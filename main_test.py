@@ -13,7 +13,7 @@ def test():
 
     import tests.server_tests as tests
 
-    g.db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
+    g.db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True) # TODO delete it
     create_db()
 
     for i in dir(tests):
