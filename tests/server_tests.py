@@ -87,10 +87,9 @@ def test_change_mess_count(): #working
     assertTrue(query.exists(), __name__)
 
     make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
-                                                                   '"title":'
-                                                                       '"колво сообщений у https://vk.com/tatbottoo {0}"'
-             '}}'.format(new_mes_count))
+                       '"out": 0, "user_id": 142872618, "read_state": 0,'
+                       '"title": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
+                        + '"}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
@@ -106,11 +105,11 @@ def test_add_sender():
     assertTrue(not query.exists(), __name__)
 
     make_req('{"type": "message_new",'
-                                 '"object": {"id": 43,'
-                                 '"date": 1492522323,'
-                                            '"out": 0, "user_id": 142872618, "read_state": 0,'
-                                            '"title":'
-                                                '"добавить страницу {0}")}}'.format(str(sender)))
+                '"object": {"id": 43,'
+                '"date": 1492522323,'
+                '"out": 0, "user_id": 142872618, "read_state": 0,'
+                '"title": "добавить страницу ' +
+                str(sender) + '"}}')
 
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
     assertTrue(query.exists(), __name__)
@@ -128,10 +127,9 @@ def test_change_text():
     assertTrue(query.exists(), __name__)
 
     make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                           '"out": 0, "user_id": 142872618, "read_state": 0,'
-                                           '"title":'
-                                               '"Текст у https://vk.com/tatbottoo \"{0}\""'
-                                            '}}'.format(str(new_text)))
+                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+                                   '"title": "Текст у https://vk.com/tatbottoo \"' +
+                                    str(new_text) + '\""}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
