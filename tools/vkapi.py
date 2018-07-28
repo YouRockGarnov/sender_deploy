@@ -43,6 +43,8 @@ def to_vkid(scr_name):
             return 69337293
         elif scr_name == 'tatbottoo':
             return 168619478
+        elif scr_name == 'id280679710':
+            return 280679710
 
     print(scr_name)
     response = api.utils.resolveScreenName(screen_name=scr_name)
