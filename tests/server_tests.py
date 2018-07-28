@@ -30,10 +30,10 @@ def make_req(message):
 def test_not_command_mes():
     g.db.close()
 
-    debug_processing('"type": "message_new", '
+    debug_processing('{"type": "message_new", '
               '"object": {"id": 43, "date": 1492522323, "out": 0, '
               '"user_id": 142872618, "read_state": 0, "title": '
-              '"Это тестовое сообщение","body": "Пересланное"}}')
+              '"Это тестовое сообщение", "body": "Пересланное"}}')
 
     assertEqual(vkapi.sended_message, 'Я не понял команды. Попробуйте еще раз.', __name__)
 
