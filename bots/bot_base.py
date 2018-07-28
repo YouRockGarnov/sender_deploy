@@ -45,12 +45,13 @@ class BotBase:
             self.send_message(user_id, 'Я добавил эту страницу.')
         else:
             random_query = AdminPage.select().order_by(fn.Random())
-            random_admin = random_query.get()
 
             # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
             # new_user = UserPage.create(vkid=user_id, target_group=tgroup, status='active') # TODO check
 
-            vkapi.forward_messages(random_admin.vkid, token=self._token,
+            if random_query.exists():
+                random_admin = random_query.get()
+                vkapi.forward_messages(random_admin.vkid, token=self._token,
                                    messages_id=str(data['object']['id']))
 
         return 'ok'
