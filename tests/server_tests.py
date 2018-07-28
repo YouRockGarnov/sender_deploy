@@ -1,7 +1,5 @@
-import tools.debug
-import tools.debug_process
+from tools.debug_process import debug_processing
 import vkbot_main
-import unittest
 import tools.vkapi as vkapi
 from db.mymodels import *
 from sender.Sender import State
@@ -32,7 +30,7 @@ def make_req(message):
 def test_not_command_mes():
     g.db.close()
 
-    make_req('"type": "message_new", '
+    debug_processing('"type": "message_new", '
               '"object": {"id": 43, "date": 1492522323, "out": 0, '
               '"user_id": 142872618, "read_state": 0, "title": '
               '"Это тестовое сообщение","body": "Пересланное"}}')
@@ -47,7 +45,7 @@ def test_add_admin(): # working
         admin = query.get()
         admin.delete_instance()
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0,'
                                                                    '"title": "Добавь админа https://vk.com/id481116745}}')
 
@@ -67,7 +65,7 @@ def test_add_group(): # working
         admin = query.get()
         admin.delete_instance()
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0,'
                                                                    '"title": "Добавь группу https://vk.com/tatbottoo"}')
 
@@ -86,7 +84,7 @@ def test_change_mess_count(): #working
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                        '"out": 0, "user_id": 142872618, "read_state": 0,'
                        '"title": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
                         + '"}}')
@@ -104,7 +102,7 @@ def test_add_sender():
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
     assertTrue(not query.exists(), __name__)
 
-    make_req('{"type": "message_new",'
+    debug_processing('{"type": "message_new",'
                 '"object": {"id": 43,'
                 '"date": 1492522323,'
                 '"out": 0, "user_id": 142872618, "read_state": 0,'
@@ -126,7 +124,7 @@ def test_change_text():
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                    '"out": 0, "user_id": 142872618, "read_state": 0,'
                                    '"title": "Текст у https://vk.com/tatbottoo \"' +
                                     str(new_text) + '\""}}')
@@ -143,7 +141,7 @@ def test_run_sender():
 
     assertTrue(vkbot_main.vkbot._sender._state == State.stopped, __name__)
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0,'
                                                                    '"title":'
                                                                        '"запусти рассылку"}}')
@@ -159,7 +157,7 @@ def test_consumer_reply():
 
     time.sleep(1)
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                                                    '"out": 0, "user_id": user_id, "read_state": 0,'
                                                                    '"title":'
                                                                        '"Ну окей, меня заинтересовал ваш тату-салон."}}')
@@ -173,7 +171,7 @@ def test_consumer_mess():
     screenname = 'https://vk.com/paulpalich'
     consumer_id = vkapi.message_to_vkid(screenname)
 
-    make_req('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                                                                    '"out": 0, "user_id": consumer_id, "read_state": 0,'
                                                                    '"title":'
                                                                        '"Это случайное сообщение от случайного чувака!!!"}}')

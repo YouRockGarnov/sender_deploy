@@ -20,8 +20,6 @@ def test():
 
 import os
 if not ('HEROKU' in os.environ):
-    import unittest
     print('unitests started')
-    print(AdminPage.get(AdminPage.vkid == 142872618))
-    unittest.main()
+    test()
     print('unitests ended')
