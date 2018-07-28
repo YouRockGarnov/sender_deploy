@@ -9,7 +9,7 @@ from db.creating_scratch import init_db
 from app import app
 from flask import g
 from tools.debug import DEBUG
-# from main_test import test
+from main_test import test
 
 vkbot = VKBot(token)
 
