@@ -38,6 +38,7 @@ def setDEBUG_False():
 
 @app.route('/getDEBUG_Flag', methods=['GET'])
 def get_debug():
+    global DEBUG
     print(DEBUG)
     return 'DEBUG = {0}'.format(DEBUG)
 

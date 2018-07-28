@@ -12,7 +12,8 @@ def init_db():
     db_proxy.initialize(db)
 
 def create_db():
-    if DEBUG:
+    import os
+    if not ('HEROKU' in os.environ):
         db = SqliteDatabase('../sender.sqlite')
         db.connect(True)
 
