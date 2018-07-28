@@ -146,9 +146,9 @@ def test_run_sender():
 
     assertTrue(vkbot_main.vkbot._sender._state == State.stopped, __name__)
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
-                                                                   '"title":'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
+                                                                   '"title": '
                                                                        '"запусти рассылку"}}')
 
     assertEqual(vkbot_main.vkbot._sender._state, State.waiting, __name__)
@@ -162,9 +162,9 @@ def test_consumer_reply():
 
     time.sleep(1)
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": user_id, "read_state": 0,'
-                                                                   '"title":'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": user_id, "read_state": 0, '
+                                                                   '"title": '
                                                                        '"Ну окей, меня заинтересовал ваш тату-салон."}}')
 
     user_page = UserPage.get(UserPage.vkid == user_id)
@@ -176,9 +176,9 @@ def test_consumer_mess():
     screenname = 'https://vk.com/paulpalich'
     consumer_id = vkapi.message_to_vkid(screenname)
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": consumer_id, "read_state": 0,'
-                                                                   '"title":'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": consumer_id, "read_state": 0, '  
+                                                                   '"title": '
                                                                        '"Это случайное сообщение от случайного чувака!!!"}}')
 
     assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__)
