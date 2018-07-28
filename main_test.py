@@ -12,7 +12,7 @@ def test():
 
     import tests.server_tests as tests
 
-    g.db.drop_table([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
+    g.db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
     for i in dir(tests):
         item = getattr(tests,i)
         if callable(item) and repr(item).find('test_') != -1:
