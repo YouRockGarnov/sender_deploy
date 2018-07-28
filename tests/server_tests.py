@@ -163,9 +163,8 @@ def test_consumer_reply():
     time.sleep(1)
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
-                                                                   '"out": 0, "user_id": user_id, "read_state": 0, '
-                                                                   '"title": '
-                                                                       '"Ну окей, меня заинтересовал ваш тату-салон."}}')
+                               '"out": 0, "user_id": ' + str(user_id) + ', "read_state": 0, '
+                               '"title": "Ну окей, меня заинтересовал ваш тату-салон."}}')
 
     user_page = UserPage.get(UserPage.vkid == user_id)
     assertEqual(user_page.status, 'active', __name__)
