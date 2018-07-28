@@ -162,7 +162,7 @@ def test_consumer_reply():
 
     time.sleep(1)
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 280679710, '
                                '"out": 0, "user_id": ' + str(user_id) + ', "read_state": 0, '
                                '"title": "Ну окей, меня заинтересовал ваш тату-салон."}}')
 
