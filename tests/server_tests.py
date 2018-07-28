@@ -157,7 +157,7 @@ def test_run_sender():
 def test_consumer_reply():
     g.db.close()
 
-    user = 'id481116745'
+    user = 'id280679710'
     user_id = vkapi.to_vkid(user)
 
     time.sleep(1)
