@@ -53,7 +53,7 @@ def to_vkid(scr_name):
 
 def get_group_memb(scr_name):
     if DEBUG:
-        return [159817977, 481116745]
+        return [159817977, 481116745, 280679710]
 
     response = api.utils.resolveScreenName(screen_name=scr_name)
 
