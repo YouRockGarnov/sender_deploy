@@ -45,9 +45,9 @@ def test_add_admin(): # working
         admin = query.get()
         admin.delete_instance()
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
-                                                                   '"title": "Добавь админа https://vk.com/id481116745}}')
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
+                                                                   '"title": "Добавь админа https://vk.com/id481116745"}}')
 
     query = AdminPage.select().where(AdminPage.vkid == 481116745)
     assertTrue(query.exists(), __name__)
