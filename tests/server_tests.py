@@ -62,8 +62,11 @@ def test_add_group(): # working
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
 
     if query.exists():
-        admin = query.get()
-        admin.delete_instance()
+        group = query.get()
+        users = UserPage.get(UserPage.target_group == group)
+
+        users.delete_instance()
+        group.delete_instance()
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
