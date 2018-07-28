@@ -1,5 +1,5 @@
 from db.mymodels import *
-from flask import Flask, json, request
+from flask import Flask, json, request, g
 from app import app
 
 
@@ -12,6 +12,7 @@ def test():
 
     import tests.server_tests as tests
 
+    g.db.drop_table([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
     for i in dir(tests):
         item = getattr(tests,i)
         if callable(item) and repr(item).find('test_') != -1:
