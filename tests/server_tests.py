@@ -65,8 +65,8 @@ def test_add_group(): # working
         admin = query.get()
         admin.delete_instance()
 
-    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-                                                                   '"out": 0, "user_id": 142872618, "read_state": 0,'
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
                                                                    '"title": "Добавь группу https://vk.com/tatbottoo"}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)

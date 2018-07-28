@@ -5,6 +5,8 @@ from vkbot_main import vkbot
 import json
 
 def debug_processing(strdata):
+    print(strdata)
+
     data = json.loads(strdata)
 
     db_proxy.connect(True)
