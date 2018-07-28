@@ -1,6 +1,7 @@
 from db.mymodels import *
 from flask import Flask, json, request, g
 from app import app
+from db.creating_scratch import create_db
 
 
 @app.route('/test', methods=['GET'])
@@ -13,7 +14,7 @@ def test():
     import tests.server_tests as tests
 
     g.db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
-    g.db.create_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
+    create_db()
 
     for i in dir(tests):
         item = getattr(tests,i)
