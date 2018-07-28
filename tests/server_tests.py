@@ -65,6 +65,7 @@ def test_add_group(): # working
         group = query.get()
         users = UserPage.get(UserPage.target_group == group)
 
+        logger.info(users)
         users.delete_instance()
         group.delete_instance()
 
