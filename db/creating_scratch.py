@@ -14,7 +14,7 @@ def init_db():
 def create_db():
     if DEBUG:
         db = SqliteDatabase('../sender.sqlite')
-        db.connect()
+        db.connect(True)
 
         db.create_tables([AdminPage, TargetGroup, UserPage, SenderPage])
 
@@ -23,7 +23,7 @@ def create_db():
     else:
         init_db()
 
-        db_proxy.connect()
+        db_proxy.connect(True)
         print('CONNECTED')
         # TODO сделать так, чтобы дубликаты не добавлялись
         db_proxy.create_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True)
@@ -44,7 +44,7 @@ def reset_db():
     db = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname,
                             port=url.port)
 
-    db.connect()
+    db.connect(True)
     print('CONNECTED')
 
     db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage])
