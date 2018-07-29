@@ -30,7 +30,7 @@ class AdminPage(Model):
 class UserPage(Model):
     vkid = IntegerField()
     target_group = ForeignKeyField(TargetGroup, backref='id')
-    status = CharField() # 'not noticed', 'active'
+    status = TextField() # 'not noticed', 'active'
 
     class Meta:
         database = db_proxy
@@ -38,7 +38,7 @@ class UserPage(Model):
 
 class SenderPage(Model):
     vkid = IntegerField()
-    token = IntegerField()
+    token = TextField()
     message_count = IntegerField()
     update_time = DateTimeField(default=datetime(1999, 11, 23, 12, 30)) # мой день рождения.
                                             # При создании страницы обновляет message_count и update_time

@@ -17,6 +17,7 @@ def create_db():
         db = SqliteDatabase('../sender.sqlite')
         db.connect(True)
 
+        db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage])
         db.create_tables([AdminPage, TargetGroup, UserPage, SenderPage])
 
         yuri = AdminPage(vkid=142872618)
