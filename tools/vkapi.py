@@ -49,7 +49,12 @@ def to_vkid(scr_name):
             return 280679710
 
     print(scr_name)
+
     response = api.utils.resolveScreenName(screen_name=scr_name)
+
+    if response['response'] == []:
+        raise ManualException('Кажется вы дали неверную ссылку, я не нашел такого пользователя!')
+
     return response['response']['object_id']
 
 

@@ -21,51 +21,60 @@ class BotBase:
         logger.info('call "bot.reply_to_message')
         user_id = data['object']['user_id']
 
-        if AdminPage.select().where(AdminPage.vkid == user_id).exists(): # TODO check
-            self.send_message(user_id, self.reply_to_admin(data))
-        elif UserPage.select().where(UserPage.vkid == user_id).exists():
-            # если страница пользователя прислала ответ
+        try:
+            if AdminPage.select().where(AdminPage.vkid == user_id).exists(): # TODO check
+                self.send_message(user_id, self.reply_to_admin(data))
 
-            logger.info('User page sended respose.')
+            elif UserPage.select().where(UserPage.vkid == user_id).exists():
+                # если страница пользователя прислала ответ
+                self._receive_user_response(data)
 
-            user = UserPage.get(UserPage.vkid == user_id)
-            user.status = 'active' # пользователь откликнулся
+            elif user_id in self._wait_for_sender:
+                # страница-рассыльщик прислала ссылку с токеном
 
-            tgroup = user.target_group
-            admin_vkid = AdminPage.select().where(AdminPage.vkid == tgroup.admin_id).get().vkid
+                logger.info('Sender sended url with access token.')
 
-            vkapi.forward_messages(admin_vkid, token=self._token,
-                                   messages_id=str(data['object']['id']))
+                message = data['object']['title']
 
-            user.save()
+                access_token = vkapi.get_access_token_from_url(message)
 
-        elif user_id in self._wait_for_sender:
-            # страница-рассыльщик прислала ссылку с токеном
+                sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
+                self._sender.something_is_changed()
 
-            logger.info('Sender sended url with access token.')
+                self.send_message(user_id, 'Я добавил эту страницу.')
+            else:
+                logger.info('Random user sended to me a message.')
 
-            message = data['object']['title']
+                random_query = AdminPage.select().order_by(fn.Random())
 
-            access_token = vkapi.get_access_token_from_url(message)
+                # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
+                # new_user = UserPage.create(vkid=user_id, target_group=tgroup, status='active') # TODO check
 
-            sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
-            self._sender.something_is_changed()
+                if random_query.exists():
+                    random_admin = random_query.get()
+                    vkapi.forward_messages(random_admin.vkid, token=self._token,
+                                       messages_id=str(data['object']['id']))
 
-            self.send_message(user_id, 'Я добавил эту страницу.')
-        else:
-            logger.info('Random user sended to me a message.')
+        except ManualException as ex:
+            vkapi.send_message(user_id=user_id, token=self._token, message=ex.message)
+        finally:
+            return 'ok'
 
-            random_query = AdminPage.select().order_by(fn.Random())
+    def _receive_user_response(self, data):
+        user_id = data['object']['user_id']
 
-            # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
-            # new_user = UserPage.create(vkid=user_id, target_group=tgroup, status='active') # TODO check
+        logger.info('User page sended respose.')
 
-            if random_query.exists():
-                random_admin = random_query.get()
-                vkapi.forward_messages(random_admin.vkid, token=self._token,
-                                   messages_id=str(data['object']['id']))
+        user = UserPage.get(UserPage.vkid == user_id)
+        user.status = 'active'  # пользователь откликнулся
 
-        return 'ok'
+        tgroup = user.target_group
+        admin_vkid = AdminPage.select().where(AdminPage.vkid == tgroup.admin_id).get().vkid
+
+        vkapi.forward_messages(admin_vkid, token=self._token,
+                               messages_id=str(data['object']['id']))
+
+        user.save()
 
     def reply_to_admin(self, data):
         logger.info('in reply_to_admin()')
