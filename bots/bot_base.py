@@ -26,6 +26,9 @@ class BotBase:
             self.send_message(user_id, self.reply_to_admin(data))
         elif UserPage.select().where(UserPage.vkid == user_id).exists():
             # если страница пользователя прислала ответ
+
+            logger.info('User page sended respose.')
+
             user = UserPage.get(UserPage.vkid == user_id)
             user.status = 'active' # пользователь откликнулся
 
@@ -38,6 +41,10 @@ class BotBase:
             user.save()
 
         elif user_id in self._wait_for_sender:
+            # страница-рассыльщик прислала ссылку с токеном
+
+            logger.info('Sender sended url with access token.')
+
             message = data['object']['title']
 
             import urllib.parse as urlparse
@@ -48,6 +55,8 @@ class BotBase:
 
             self.send_message(user_id, 'Я добавил эту страницу.')
         else:
+            logger.info('Random user sended to me a message.')
+
             random_query = AdminPage.select().order_by(fn.Random())
 
             # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
