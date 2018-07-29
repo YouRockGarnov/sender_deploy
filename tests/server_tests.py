@@ -124,7 +124,7 @@ def test_add_sender():
     debug_processing('{"type": "message_new",'
                 '"object": {"id": 43,'
                 '"date": 1492522323,'
-                '"out": 0, "user_id": 142872618, "read_state": 0,'
+                '"out": 0, "user_id": 69337293, "read_state": 0,'
                 '"title": "' + fake_token + '"}}')
 
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
