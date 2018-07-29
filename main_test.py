@@ -22,6 +22,8 @@ def test():
             print(repr(item))
             item()
 
+    return 'ok'
+
 import os
 if not ('HEROKU' in os.environ):
     print('unitests started')
