@@ -1,5 +1,5 @@
 import vk
-from tools.debug import *
+from tools.debug import DEBUG
 from tools.exceptions import ManualException
 from tools.log import logger
 
@@ -10,6 +10,8 @@ sended_message = ''
 
 def send_message(user_id, token, message, attachment=""):
     logger.info('send \"' + message.encode().decode("utf-8",'replace') + ' \" to ' + str(user_id))
+
+    print(DEBUG)
     if (DEBUG):
         print(message)
         global sended_message
