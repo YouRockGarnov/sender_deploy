@@ -98,27 +98,41 @@ def test_change_mess_count(): #working
     assertEqual(query.get().message_count, new_mes_count, __name__)
 
 def test_add_sender():
-    pass
-    # g.db.close()
-    #
-    # sender = 'patlin'
-    # sender_id = vkapi.to_vkid(sender)
-    #
-    # query = SenderPage.select().where(SenderPage.vkid == sender_id)
-    # assertTrue(not query.exists(), __name__)
-    #
-    # debug_processing('{"type": "message_new",'
-    #             '"object": {"id": 43,'
-    #             '"date": 1492522323,'
-    #             '"out": 0, "user_id": 142872618, "read_state": 0,'
-    #             '"title": "добавить страницу ' +
-    #             str(sender) + '"}}')
-    #
-    # query = SenderPage.select().where(SenderPage.vkid == sender_id)
-    # assertTrue(query.exists(), __name__)
-    #
-    # sender = query.get()
-    # assertEqual(sender.vkid, sender_id, __name__)
+    g.db.close()
+
+    sender = 'patlin'
+    sender_id = vkapi.to_vkid(sender)
+
+    query = SenderPage.select().where(SenderPage.vkid == sender_id)
+
+    if (query.exists()):
+        inst = query.get()
+        inst.delete_instance()
+
+    assertTrue(not query.exists(), __name__)
+
+    debug_processing('{"type": "message_new",'
+                '"object": {"id": 43,'
+                '"date": 1492522323,'
+                '"out": 0, "user_id": 142872618, "read_state": 0,'
+                '"title": "добавить страницу ' +
+                str(sender) + '"}}')
+
+    fake_token = 'https://oauth.vk.com/blank.html#access_token=f616432f6d3124e6e0fa29d45818848de94267c747ac20e3a4f5f90d00195da39d2d5f26d218f4211f538' \
+                 '&expires_in=0&user_id=XXXXXXXXX&email=ya@www.pandoge.com'
+
+    debug_processing('{"type": "message_new",'
+                '"object": {"id": 43,'
+                '"date": 1492522323,'
+                '"out": 0, "user_id": 142872618, "read_state": 0,'
+                '"title": "' + fake_token + '"}}')
+
+    query = SenderPage.select().where(SenderPage.vkid == sender_id)
+    assertTrue(query.exists(), __name__)
+
+    sender = query.get()
+    assertEqual(sender.vkid, sender_id, __name__)
+    sender.delete_instance()
 
 def test_change_text():
     g.db.close()

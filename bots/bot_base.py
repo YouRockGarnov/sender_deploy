@@ -38,8 +38,12 @@ class BotBase:
             user.save()
 
         elif user_id in self._wait_for_sender:
-            message = data['object']['title'].lower()
-            sender = SenderPage.create(vkid=vkapi.message_to_vkid(message), message_count=self._message_limit)
+            message = data['object']['title']
+
+            import urllib.parse as urlparse
+            url = urlparse.urlparse(message)
+
+            sender = SenderPage.create(vkid=user_id, token=url.access_token, message_count=self._sender._message_limit)
             self._sender.something_is_changed()
 
             self.send_message(user_id, 'Я добавил эту страницу.')
@@ -149,7 +153,7 @@ class BotBase:
 
     def _add_sender(self, user_to_response, message):
         response = 'Я на отправил запрос к {0}. ' \
-                   'Необходимо зайти на эту страницу и подтвердить добавление.'.format(vkapi.message_to_scrname(message))
+                   'Необходимо зайти на эту страницу и подтвердить добавление.'.format(user_to_response)
 
         auth_link = '''https://oauth.vk.com/authorize?client_id={app_id}
                            &scope=photos,audio,video,docs,notes,pages,status,
