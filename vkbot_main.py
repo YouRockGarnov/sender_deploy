@@ -8,7 +8,7 @@ import db.creating_scratch as creating_scratch
 from db.creating_scratch import init_db
 from app import app
 from flask import g
-from tools.debug import DEBUG
+import tools.debug as debug_module
 from main_test import test
 
 vkbot = VKBot(token)
@@ -26,21 +26,18 @@ def after_request(response):
 
 @app.route('/setDEBUG_True', methods=['GET'])
 def setDEBUG_True():
-    global DEBUG
-    DEBUG = True
+    debug_module.DEBUG = True
     return 'DEBUG = True'
 
 @app.route('/setDEBUG_False', methods=['GET'])
 def setDEBUG_False():
-    global DEBUG
-    DEBUG = False
+    debug_module.DEBUG = False
     return 'DEBUG = False'
 
 @app.route('/getDEBUG_Flag', methods=['GET'])
 def get_debug():
-    global DEBUG
-    print(DEBUG)
-    return 'DEBUG = {0}'.format(DEBUG)
+    print(debug_module.DEBUG)
+    return 'DEBUG = {0}'.format(debug_module.DEBUG)
 
 
 @app.route('/create_db', methods=['GET'])
