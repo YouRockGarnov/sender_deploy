@@ -161,8 +161,8 @@ class BotBase:
         group.save()
 
     def _add_sender(self, user_to_response, message):
-        response = 'Я на отправил запрос к {0}. ' \
-                   'Необходимо зайти на эту страницу и подтвердить добавление.'.format(user_to_response)
+        response = 'Я отправил запрос к {0}. ' \
+                   'Необходимо зайти на эту страницу и подтвердить добавление.'.format(vkapi.message_to_vkid(message))
 
         auth_link = '''https://oauth.vk.com/authorize?client_id={app_id}
                            &scope=photos,audio,video,docs,notes,pages,status,
@@ -176,7 +176,8 @@ class BotBase:
                            'скопировать ссылку из адресной строки и отправить мне обратно.'
                            .format(auth_link))
 
-        self._wait_for_sender.append(vkapi.message_to_scrname(message))
+        logger.info('Added to _wait_for_sender {0}'.format(vkapi.message_to_scrname(message)))
+        self._wait_for_sender.append(vkapi.message_to_vkid(message))
 
         return response
 
