@@ -2,6 +2,7 @@ from db.mymodels import *
 from flask import Flask, json, request, g
 from app import app
 from db.creating_scratch import create_db
+from tools.log import logger
 
 
 @app.route('/test', methods=['GET'])
@@ -22,6 +23,7 @@ def test():
             print(repr(item))
             item()
 
+    logger.info('All tests are passed!')
     return 'ok'
 
 import os
