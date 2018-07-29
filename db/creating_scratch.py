@@ -1,7 +1,6 @@
 from peewee import PostgresqlDatabase, Database, Proxy, SqliteDatabase
 from db.mymodels import AdminPage, TargetGroup, UserPage, SenderPage
 from db.mymodels import db_proxy
-from tools.debug import DEBUG
 
 def init_db():
     import urllib.parse as urlparse, psycopg2, os

@@ -1,7 +1,7 @@
 from flask import Flask, json, request
-import os
-import urllib.parse as urlparse
-import psycopg2
+# import os
+# import urllib.parse as urlparse
+# import psycopg2
 
 # if 'HEROKU' in os.environ:
 #     DEBUG = False

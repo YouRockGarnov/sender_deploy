@@ -26,18 +26,18 @@ def after_request(response):
 
 @app.route('/setDEBUG_True', methods=['GET'])
 def setDEBUG_True():
-    debug_module.DEBUG = True
+    debug_module.setDEBUG(True)
     return 'DEBUG = True'
 
 @app.route('/setDEBUG_False', methods=['GET'])
 def setDEBUG_False():
-    debug_module.DEBUG = False
+    debug_module.setDEBUG(False)
     return 'DEBUG = False'
 
 @app.route('/getDEBUG_Flag', methods=['GET'])
 def get_debug():
-    print(debug_module.DEBUG)
-    return 'DEBUG = {0}'.format(debug_module.DEBUG)
+    print(debug_module.getDEBUG())
+    return 'DEBUG = {0}'.format(debug_module.getDEBUG())
 
 
 @app.route('/create_db', methods=['GET'])
@@ -47,7 +47,7 @@ def create_db():
 
 @app.route('/', methods=['POST'])
 def processing():
-    if debug_module.DEBUG:
+    if debug_module.getDEBUG():
         logger.info('Run in debug.')
 
     logger.info('in processing')

@@ -3,7 +3,6 @@ from settings import *
 from tools.log import logger
 from tools.exceptions import ManualException
 from db.mymodels import *
-from tools.debug import *
 from sender.Sender import Sender
 from peewee import fn
 import traceback

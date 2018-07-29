@@ -1,4 +1,3 @@
-import tools.debug
 import tools.debug_process
 import vkbot_main
 import unittest
