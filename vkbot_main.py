@@ -47,7 +47,7 @@ def create_db():
 
 @app.route('/', methods=['POST'])
 def processing():
-    if DEBUG:
+    if debug_module.DEBUG:
         logger.info('Run in debug.')
 
     logger.info('in processing')
