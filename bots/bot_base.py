@@ -47,10 +47,9 @@ class BotBase:
 
             message = data['object']['title']
 
-            import urllib.parse as urlparse
-            url = urlparse.urlparse(message)
+            access_token = vkapi.get_access_token_from_url(message)
 
-            sender = SenderPage.create(vkid=user_id, token=url.access_token, message_count=self._sender._message_limit)
+            sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
             self._sender.something_is_changed()
 
             self.send_message(user_id, 'Я добавил эту страницу.')

@@ -69,3 +69,6 @@ def message_to_scrname(mess):
 
 def message_to_vkid(mess):
     return to_vkid(message_to_scrname(mess))
+
+def get_access_token_from_url(url):
+    return url.split('access_token=')[1].split('&')[0]
