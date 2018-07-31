@@ -22,6 +22,9 @@ class BotBase:
         user_id = data['object']['user_id']
 
         logger.info('USERID: '+ str(user_id))
+        print('After USERID, moderators: ', end='')
+        print(self._wait_for_moderators)
+
 
         # TODO производить удаления пользователей при добавлении в другие категории (Юзер -> админ)
         try:
