@@ -28,7 +28,12 @@ class BotBase:
 
         # TODO производить удаления пользователей при добавлении в другие категории (Юзер -> админ)
         try:
-            if AdminPage.select().where(AdminPage.vkid == user_id).exists():
+            if user_id in self._wait_for_moderators:
+
+                logger.info('Group moderator sended url with access token.')
+                self._add_group(user_id, self._wait_for_moderators[user_id], data)
+
+            elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
                 self.send_message(user_id, self.reply_to_admin(data))
 
             elif UserPage.select().where(UserPage.vkid == user_id).exists():
@@ -48,11 +53,6 @@ class BotBase:
                 self._sender.something_is_changed()
 
                 self.send_message(user_id, 'Я добавил эту страницу.')
-
-            elif user_id in self._wait_for_moderators:
-
-                logger.info('Group moderator sended url with access token.')
-                self._add_group(user_id, self._wait_for_moderators[user_id], data)
 
             else:
                 logger.info('Random user sended to me a message.')
