@@ -21,6 +21,8 @@ class BotBase:
         logger.info('call "bot.reply_to_message')
         user_id = data['object']['user_id']
 
+        logger.info('USERID: '+ user_id)
+
         # TODO производить удаления пользователей при добавлении в другие категории (Юзер -> админ)
         try:
             if AdminPage.select().where(AdminPage.vkid == user_id).exists():
@@ -98,6 +100,9 @@ class BotBase:
                 # self._add_group(user_id, message)
 
                 self._wait_for_moderators[user_id] =  vkapi.message_to_vkid(message) # будем ждать ответа
+
+                print(self._wait_for_moderators)
+
                 return self._get_mess_with_auth_link()
 
             elif message[:15] == 'колво сообщений':
