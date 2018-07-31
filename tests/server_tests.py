@@ -47,7 +47,7 @@ def test_add_admin(): # working
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
-                                                                   '"title": "Добавь админа https://vk.com/id481116745"}}')
+                                                                   '"body": "Добавь админа https://vk.com/id481116745"}}')
 
     query = AdminPage.select().where(AdminPage.vkid == 481116745)
     assertTrue(query.exists(), __name__)
@@ -71,7 +71,7 @@ def test_add_group(): # working
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
-                                                                   '"title": "Добавь группу https://vk.com/tatbottoo"}}')
+                                                                   '"body": "Добавь группу https://vk.com/tatbottoo"}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
     assertTrue(query.exists(), __name__)
@@ -90,7 +90,7 @@ def test_change_mess_count(): #working
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
                        '"out": 0, "user_id": 142872618, "read_state": 0,'
-                       '"title": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
+                       '"body": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
                         + '"}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
@@ -115,7 +115,7 @@ def test_add_sender():
                 '"object": {"id": 43,'
                 '"date": 1492522323,'
                 '"out": 0, "user_id": 142872618, "read_state": 0,'
-                '"title": "добавить страницу ' +
+                '"body": "добавить страницу ' +
                 str(sender) + '"}}')
 
     fake_token = 'https://oauth.vk.com/blank.html#access_token=f616432f6d3124e6e0fa29d45818848de94267c747ac20e3a4f5f90d00195da39d2d5f26d218f4211f538' \
@@ -125,7 +125,7 @@ def test_add_sender():
                 '"object": {"id": 43,'
                 '"date": 1492522323,'
                 '"out": 0, "user_id": 69337293, "read_state": 0,'
-                '"title": "' + fake_token + '"}}')
+                '"body": "' + fake_token + '"}}')
 
     query = SenderPage.select().where(SenderPage.vkid == sender_id)
     assertTrue(query.exists(), __name__)
@@ -145,7 +145,7 @@ def test_change_text():
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
-                                   '"title": "Текст у https://vk.com/tatbottoo \\"' +
+                                   '"body": "Текст у https://vk.com/tatbottoo \\"' +
                                     str(new_text) + '\\""}}')
 
     query = TargetGroup.select().where(TargetGroup.vkid == group_id)
@@ -162,7 +162,7 @@ def test_run_sender():
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
-                                                                   '"title": '
+                                                                   '"body": '
                                                                        '"запусти рассылку"}}')
 
     assertEqual(vkbot_main.vkbot._sender._state, State.waiting, __name__)
@@ -178,7 +178,7 @@ def test_consumer_reply():
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 280679710, '
                                '"out": 0, "user_id": ' + str(user_id) + ', "read_state": 0, '
-                               '"title": "Ну окей, меня заинтересовал ваш тату-салон."}}')
+                               '"body": "Ну окей, меня заинтересовал ваш тату-салон."}}')
 
     user_page = UserPage.get(UserPage.vkid == user_id)
     assertEqual(user_page.status, 'active', __name__)
@@ -192,6 +192,6 @@ def test_consumer_mess():
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                '"out": 0, "user_id": '
                                                 + str(consumer_id) + ', "read_state": 0, '  
-                                               '"title": "Это случайное сообщение от случайного чувака!!!"}}')
+                                               '"body": "Это случайное сообщение от случайного чувака!!!"}}')
 
     assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__)
