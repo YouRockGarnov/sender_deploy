@@ -71,7 +71,14 @@ def get_group_memb(scr_name):
     if response['type'] != 'group':
         raise ManualException('Данная ссылка не является ссылкой на группу!')
     else:
-        return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=token)['users']
+        try:
+            return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=token)['users']
+        except vk.exceptions.VkAPIError as ex:
+            if str(ex).find('Access denied: you should be group moderator.') != -1:
+                raise ManualException('Отклонено. Вы должны являться модератором сообщества, которое добавляете.')
+            else:
+                raise ex
+
 
 
 def message_to_scrname(mess):
