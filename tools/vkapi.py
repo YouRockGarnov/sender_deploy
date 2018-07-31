@@ -66,11 +66,12 @@ def get_group_memb(scr_name):
         return [159817977, 481116745, 280679710]
 
     response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
+    group_id = response['object_id']
 
     if response['type'] != 'group':
         raise ManualException('Данная ссылка не является ссылкой на группу!')
     else:
-        return api.groups.getMembers(scr_name, sort='time_desc', access_token=token)['items']
+        return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=token)['users']
 
 
 def message_to_scrname(mess):
