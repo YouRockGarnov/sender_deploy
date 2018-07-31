@@ -14,8 +14,8 @@ class BotBase:
         self._bad_message = 'Простите, во время работы произошли неполадки. Повторите запрос позже.'
         self._token = token
         self._sender = Sender()
-        self._wait_for_sender = list()
-        self._app_id = '6630979'
+        self._wait_for_sender = list() # лист тех, от кого ожидается токен, чтобы добавить их страницу, как рассыльщика
+        self._wait_for_moderators = {} # аналогично, только для тех, кто добавляет группу
 
     def reply_to_message(self, data):
         logger.info('call "bot.reply_to_message')
@@ -43,6 +43,12 @@ class BotBase:
                 self._sender.something_is_changed()
 
                 self.send_message(user_id, 'Я добавил эту страницу.')
+
+            elif user_id in self._wait_for_moderators:
+
+                logger.info('Group moderator sended url with access token.')
+                self._add_group(user_id, self._wait_for_moderators[user_id], data)
+
             else:
                 logger.info('Random user sended to me a message.')
 
@@ -89,8 +95,10 @@ class BotBase:
                 return 'Админ добавлен.'
 
             elif message.find('добавь группу') != -1 or message.find('добавить группу') != -1: #TODO change find to [a, b]
-                self._add_group(user_id, message)
-                return 'Группа добавлена.'
+                # self._add_group(user_id, message)
+
+                self._wait_for_moderators[user_id] =  vkapi.message_to_vkid(message) # будем ждать ответа
+                return self._get_mess_with_auth_link()
 
             elif message[:15] == 'колво сообщений':
                 self._change_mess_count(message)
@@ -129,16 +137,18 @@ class BotBase:
 
         admin = AdminPage.create(vkid=new_anmin_vkid, target_group=None)
 
-    def _add_group(self, adm_id, message):
+    def _add_group(self, group_id, moderator_id, data):
+        message = data['object']['body']
+
         self._sender.something_is_changed()
         logger.info('in BotBase._add_group()')
 
         scr_name = vkapi.message_to_scrname(message)
-        group_members = vkapi.get_group_memb(scr_name)
+        group_members = vkapi.get_group_memb(scr_name, vkapi.get_access_token_from_url(message))
         group_id = vkapi.to_vkid(scr_name)
 
         # TODO ТУТ КОСТЫЛЬ
-        tg_group = TargetGroup.create(id=1, vkid=group_id, admin_id=adm_id, text='', message_count=0)
+        tg_group = TargetGroup.create(id=1, vkid=group_id, admin_id=moderator_id, text='', message_count=0)
 
         for user in group_members:
 
@@ -176,22 +186,22 @@ class BotBase:
         response = 'Я отправил запрос к {0}. ' \
                    'Необходимо зайти на эту страницу и подтвердить добавление.'.format(vkapi.message_to_vkid(message))
 
-        auth_link = '''https://oauth.vk.com/authorize?client_id={app_id}
-                           &scope=photos,audio,video,docs,notes,pages,status,
-                           offers,questions,wall,groups,messages,email,
-                           notifications,stats,ads,offline,docs,pages,stats,
-                           notifications&response_type=token '''.format(app_id=self._app_id) # TODO INSERT CORRECT TOKEN
+
 
         vkapi.send_message(vkapi.message_to_vkid(message), self._token,
                            'Вашу страницу добавляют для рассылки, '
                            'для подтверждения этого надо пройти по этой ссылке {0}, '
                            'скопировать ссылку из адресной строки и отправить мне обратно.'
-                           .format(auth_link))
+                           .format(vkapi.auth_link))
 
         logger.info('Added to _wait_for_sender {0}'.format(vkapi.message_to_scrname(message)))
         self._wait_for_sender.append(vkapi.message_to_vkid(message))
 
         return response
+
+    def _get_mess_with_auth_link(self):
+        return 'Перейдите по ссылке и разрешите доступ к странице. ' \
+                   'После этого необходимо ссылку из браузера скопировать и прислать мне. Ссылка: ' + vkapi.auth_link
 
     def send_message(self, user_id, message):
         print(message)

@@ -9,6 +9,15 @@ api = vk.API(session, v=5.0)
 
 sended_message = ''
 
+_app_id_for_auth = '6630979' # для того, чтобы получать доступ к странице - нужна авторизация.
+                             # Она производится через это приложение.
+auth_link = '''https://oauth.vk.com/authorize?client_id={app_id}
+                   &scope=photos,audio,video,docs,notes,pages,status,
+                   offers,questions,wall,groups,messages,email,
+                   notifications,stats,ads,offline,docs,pages,stats,
+                   notifications&response_type=token '''.format(app_id=_app_id_for_auth)  # TODO INSERT CORRECT TOKEN
+
+
 def send_message(user_id, token, message, attachment=""):
     logger.info('send \"' + message.encode().decode("utf-8",'replace') + ' \" to ' + str(user_id))
 
@@ -61,7 +70,7 @@ def to_vkid(scr_name):
     return response['object_id']
 
 
-def get_group_memb(scr_name):
+def get_group_memb(scr_name, moderator_token):
     if getDEBUG():
         return [159817977, 481116745, 280679710]
 
@@ -72,7 +81,7 @@ def get_group_memb(scr_name):
         raise ManualException('Данная ссылка не является ссылкой на группу!')
     else:
         try:
-            return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=token)['users']
+            return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['users']
         except vk.exceptions.VkAPIError as ex:
             if str(ex).find('Access denied: you should be group moderator.') != -1:
                 raise ManualException('Отклонено. Вы должны являться модератором сообщества, которое добавляете.')
