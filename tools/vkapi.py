@@ -73,7 +73,6 @@ def get_group_memb(scr_name):
 def message_to_scrname(mess):
     return mess.split()[-1].split('/')[-1]
 
-
 def message_to_vkid(mess):
     return to_vkid(message_to_scrname(mess))
 

@@ -34,7 +34,7 @@ class BotBase:
 
                 logger.info('Sender sended url with access token.')
 
-                message = data['object']['title']
+                message = data['object']['body']
 
                 access_token = vkapi.get_access_token_from_url(message)
 
@@ -79,7 +79,7 @@ class BotBase:
     def reply_to_admin(self, data):
         logger.info('in reply_to_admin()')
 
-        message = data['object']['title'].lower()
+        message = data['object']['body'].lower()
         user_id = data['object']['user_id']
 
         try:
@@ -96,7 +96,7 @@ class BotBase:
                 return 'Количество сообщений изменено.'
 
             elif message[:5] == 'текст': # TODO text для конкретной группы
-                self._change_text(data['object']['title']) # неизмененный текст нужен
+                self._change_text(data['object']['body']) # неизмененный текст нужен
                 return 'Текст изменен.'
 
             elif message[:24].find('добавь страницу') != -1 or message[:24].find('добавить страницу') != -1:
