@@ -21,7 +21,7 @@ class BotBase:
         logger.info('call "bot.reply_to_message')
         user_id = data['object']['user_id']
 
-        logger.info('USERID: '+ user_id)
+        logger.info('USERID: '+ str(user_id))
 
         # TODO производить удаления пользователей при добавлении в другие категории (Юзер -> админ)
         try:
