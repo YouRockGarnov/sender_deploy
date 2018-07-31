@@ -64,8 +64,9 @@ def to_vkid(scr_name):
 
     if response == []:
         raise ManualException('Кажется вы дали неверную ссылку, я не нашел такого пользователя!')
-    elif response['type'] != 'user':
-        raise ManualException('Вы прислали ссылку не на пользователя. Админом может быть только пользователь.')
+    # elif response['type'] != 'user':
+    #     raise ManualException('Вы прислали ссылку не на пользователя. Админом может быть только пользователь.')
+    # надо делать проверку в методах добавления админа
 
     return response['object_id']
 
