@@ -35,6 +35,8 @@ class BotBase:
 
                 self.send_message(user_id, 'Группа добавлена.')
 
+                del self._wait_for_moderators[user_id]
+
             elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
                 self.send_message(user_id, self.reply_to_admin(data))
 
@@ -53,6 +55,8 @@ class BotBase:
 
                 sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
                 self._sender.something_is_changed()
+
+                del self._wait_for_sender[user_id]
 
                 self.send_message(user_id, 'Я добавил эту страницу.')
 
