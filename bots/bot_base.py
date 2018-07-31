@@ -31,7 +31,7 @@ class BotBase:
             if user_id in self._wait_for_moderators:
 
                 logger.info('Group moderator sended url with access token.')
-                self._add_group(user_id, self._wait_for_moderators[user_id], data)
+                return self._add_group(user_id, self._wait_for_moderators[user_id], data)
 
             elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
                 self.send_message(user_id, self.reply_to_admin(data))
