@@ -21,8 +21,9 @@ class BotBase:
         logger.info('call "bot.reply_to_message')
         user_id = data['object']['user_id']
 
+        # TODO производить удаления пользователей при добавлении в другие категории (Юзер -> админ)
         try:
-            if AdminPage.select().where(AdminPage.vkid == user_id).exists(): # TODO check
+            if AdminPage.select().where(AdminPage.vkid == user_id).exists():
                 self.send_message(user_id, self.reply_to_admin(data))
 
             elif UserPage.select().where(UserPage.vkid == user_id).exists():
@@ -140,7 +141,11 @@ class BotBase:
         tg_group = TargetGroup.create(id=1, vkid=group_id, admin_id=adm_id, text='', message_count=0)
 
         for user in group_members:
-            user_page = UserPage.create(vkid=user, target_group=tg_group, status='not noticed')
+
+            # проверка, что этот пользователь не админ
+            if not AdminPage.select().where(AdminPage.vkid == user).exists():
+                user_page = UserPage.create(vkid=user, target_group=tg_group, status='not noticed')
+                user_page.save()
 
 
     def _change_mess_count(self, message):
