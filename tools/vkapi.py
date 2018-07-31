@@ -53,10 +53,12 @@ def to_vkid(scr_name):
 
     response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
 
-    if response['response'] == []:
+    if response == []:
         raise ManualException('Кажется вы дали неверную ссылку, я не нашел такого пользователя!')
+    elif response['type'] != 'user':
+        raise ManualException('Вы прислали ссылку не на пользователя. Админом может быть только пользователь.')
 
-    return response['response']['object_id']
+    return response['object_id']
 
 
 def get_group_memb(scr_name):
