@@ -165,12 +165,15 @@ class BotBase:
         # TODO ТУТ КОСТЫЛЬ
         tg_group = TargetGroup.create(id=1, vkid=group_id, admin_id=moderator_id, text='', message_count=0)
 
+        logger.info('Before circle')
         for user in group_members:
-
+            print(user)
             # проверка, что этот пользователь не админ
             if not AdminPage.select().where(AdminPage.vkid == user).exists():
                 user_page = UserPage.create(vkid=user, target_group=tg_group, status='not noticed')
                 user_page.save()
+
+        logger.info('After circle')
 
 
     def _change_mess_count(self, message):
