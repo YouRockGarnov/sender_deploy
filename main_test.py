@@ -3,6 +3,7 @@ from flask import Flask, json, request, g
 from app import app
 from db.creating_scratch import create_db
 from tools.log import logger
+from tools.debug import setDEBUG
 
 
 @app.route('/test', methods=['GET'])
@@ -25,9 +26,3 @@ def test():
 
     logger.info('All tests are passed!')
     return 'ok'
-
-import os
-if not ('HEROKU' in os.environ):
-    print('unitests started')
-    test()
-    print('unitests ended')
