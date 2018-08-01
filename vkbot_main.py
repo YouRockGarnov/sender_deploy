@@ -59,6 +59,7 @@ def processing():
 
     # Вконтакте в своих запросах всегда отправляет поле типа
     if 'type' not in data.keys():
+        logger.info('not vk')
         return 'not vk'
 
     if data['type'] == 'confirmation':

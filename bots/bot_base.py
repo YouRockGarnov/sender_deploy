@@ -38,13 +38,6 @@ class BotBase:
 
                 del self._wait_for_moderators[user_id]
 
-            elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
-                self.send_message(user_id, self.reply_to_admin(data))
-
-            elif UserPage.select().where(UserPage.vkid == user_id).exists():
-                # если страница пользователя прислала ответ
-                self._receive_user_response(data)
-
             elif user_id in self._wait_for_sender:
                 # страница-рассыльщик прислала ссылку с токеном
 
@@ -57,9 +50,17 @@ class BotBase:
                 sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
                 self._sender.something_is_changed()
 
-                del self._wait_for_sender[user_id]
+                logger.info('wait_for_sender: ' + str(self._wait_for_sender))
+                self._wait_for_sender.remove(user_id)
 
                 self.send_message(user_id, 'Я добавил эту страницу.')
+
+            elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
+                self.send_message(user_id, self.reply_to_admin(data))
+
+            elif UserPage.select().where(UserPage.vkid == user_id).exists():
+                # если страница пользователя прислала ответ
+                self._receive_user_response(data)
 
             else:
                 logger.info('Random user sended to me a message.')
