@@ -1,7 +1,7 @@
 import vk
 from tools.debug import getDEBUG
 from tools.exceptions import ManualException
-from tools.log import logger
+from tools.log import logger, logged
 from configs.config_vkbot import token
 
 session = vk.Session()
@@ -70,12 +70,14 @@ def to_vkid(scr_name):
 
     return response['object_id']
 
-
+@logged
 def get_group_memb(scr_name, moderator_token):
     if getDEBUG():
         return [159817977, 481116745, 280679710]
 
     response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
+    logger.info('Response: ' + str(response))
+
     group_id = response['object_id']
 
     if response['type'] != 'group':
