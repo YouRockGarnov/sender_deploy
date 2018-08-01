@@ -79,8 +79,8 @@ class BotBase:
         except Exception as ex:
             vkapi.send_message(user_id=user_id, token=self._token, message=self._bad_message)
             raise ex
-        finally:
-            return 'ok'
+
+        return 'ok'
 
     def _receive_user_response(self, data):
         user_id = data['object']['user_id']
