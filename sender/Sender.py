@@ -75,7 +75,7 @@ class Sender:
 
     def send_message(self, from_token, to_id, message):
         logger.info('send \"' + str(message) + ' \" from ' + str(from_token) + ' to ' + str(to_id))
-        vkapi.send_message(user_id=to_id, access_token=from_token, message=message)
+        vkapi.send_message(user_id=to_id, token=from_token, message=message)
 
     def something_is_changed(self):
         if self._state != State.stopped:
