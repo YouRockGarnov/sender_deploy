@@ -158,9 +158,7 @@ class BotBase:
         self._sender.something_is_changed()
         logger.info('in BotBase._add_group()')
 
-        scr_name = vkapi.message_to_scrname(message)
-        group_members = vkapi.get_group_memb(scr_name, vkapi.get_access_token_from_url(message))
-        group_id = vkapi.to_vkid(scr_name)
+        group_members = vkapi.get_group_memb(group_id, vkapi.get_access_token_from_url(message))
 
         # TODO ТУТ КОСТЫЛЬ
         tg_group = TargetGroup.create(id=1, vkid=group_id, admin_id=moderator_id, text='', message_count=0)

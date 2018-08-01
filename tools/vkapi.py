@@ -3,6 +3,7 @@ from tools.debug import getDEBUG
 from tools.exceptions import ManualException
 from tools.log import logger, logged
 from configs.config_vkbot import token
+import vk.exceptions
 
 session = vk.Session()
 api = vk.API(session, v=5.0)
@@ -71,25 +72,21 @@ def to_vkid(scr_name):
     return response['object_id']
 
 @logged
-def get_group_memb(scr_name, moderator_token):
+def get_group_memb(group_id, moderator_token):
     if getDEBUG():
         return [159817977, 481116745, 280679710]
 
-    response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
-    logger.info('Response: ' + str(response))
+    # response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
+    # if response['type'] != 'group':
+    #     raise ManualException('Данная ссылка не является ссылкой на группу!')
 
-    group_id = response['object_id']
-
-    if response['type'] != 'group':
-        raise ManualException('Данная ссылка не является ссылкой на группу!')
-    else:
-        try:
-            return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['users']
-        except vk.exceptions.VkAPIError as ex:
-            if str(ex).find('Access denied: you should be group moderator.') != -1:
-                raise ManualException('Отклонено. Вы должны являться модератором сообщества, которое добавляете.')
-            else:
-                raise ex
+    try:
+        return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['users']
+    except vk.exceptions.VkAPIError as ex:
+        if str(ex).find('Access denied: you should be group moderator.') != -1:
+            raise ManualException('Отклонено. Вы должны являться модератором сообщества, которое добавляете.')
+        else:
+            raise ex
 
 
 
