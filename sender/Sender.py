@@ -56,7 +56,7 @@ class Sender:
             sender_query = SenderPage.select().where(SenderPage.message_count != 0)
 
             if sender_query.exists():
-                sender = query.get()[0]
+                sender = query.get()
 
                 for user in users:
                     self.send_message(sender.token, user.vkid, user.target_group.text)
@@ -69,7 +69,7 @@ class Sender:
                         if not query.exists():
                             return
 
-                        sender = sender_query.get()[0]
+                        sender = sender_query.get()
 
                 sender.save()
 
