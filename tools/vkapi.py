@@ -99,4 +99,8 @@ def message_to_vkid(mess):
     return to_vkid(message_to_scrname(mess))
 
 def get_access_token_from_url(url):
-    return url.split('access_token=')[1].split('&')[0]
+    try:
+        return url.split('access_token=')[1].split('&')[0]
+    except Exception as ex:
+        if str(ex).find('list index out of range') != -1:
+            raise ManualException('Вы прислали неверную ссылку, попробуйте еще раз.')
