@@ -31,7 +31,7 @@ class BotBase:
             if user_id in self._wait_for_moderators:
 
                 logger.info('Group moderator sended url with access token.')
-                self._add_group(user_id, self._wait_for_moderators[user_id], data)
+                self._add_group(self._wait_for_moderators[user_id], user_id, data)
 
                 logger.info('before send_message')
                 self.send_message(user_id, 'Группа добавлена.')
