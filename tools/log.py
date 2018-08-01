@@ -14,9 +14,9 @@ def logged(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         logger.info('Enter to function {0}'.format(repr(func)))
-        result = func(args, kwargs)
+        result = func(*args, **kwargs)
         logger.info('Exit from function {0}'.format(repr(func)))
 
         return result
 
-    return wrapper()
+    return wrapper

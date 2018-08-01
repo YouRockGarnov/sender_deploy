@@ -77,6 +77,7 @@ class BotBase:
         except ManualException as ex:
             vkapi.send_message(user_id=user_id, token=self._token, message=ex.message)
         except Exception as ex:
+            vkapi.send_message(user_id=user_id, token=self._token, message=self._bad_message)
             raise ex
         finally:
             return 'ok'

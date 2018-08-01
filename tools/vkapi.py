@@ -80,6 +80,8 @@ def get_group_memb(group_id, moderator_token):
     # if response['type'] != 'group':
     #     raise ManualException('Данная ссылка не является ссылкой на группу!')
 
+
+
     try:
         return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['users']
     except vk.exceptions.VkAPIError as ex:
