@@ -50,13 +50,13 @@ class Sender:
                     break
 
     def _send_messages(self):
-        query = UserPage.select().where(UserPage.status == 'not noticed')
-        if query.exists():
-            users = query.get()
+        users = UserPage.select()
+
+        if users.exists():
             sender_query = SenderPage.select().where(SenderPage.message_count != 0)
 
             if sender_query.exists():
-                sender = query.get()
+                sender = sender_query.get()
 
                 for user in users:
                     self.send_message(sender.token, user.vkid, user.target_group.text)
@@ -66,7 +66,7 @@ class Sender:
                         sender.save()
                         sender_query = SenderPage.select().where(SenderPage.message_count != 0)
 
-                        if not query.exists():
+                        if not sender_query.exists():
                             return
 
                         sender = sender_query.get()
