@@ -37,20 +37,7 @@ class BotBase:
 
             elif user_id in self._wait_for_sender:
                 # страница-рассыльщик прислала ссылку с токеном
-
-                logger.info('Sender sended url with access token.')
-
-                message = data['object']['body']
-
-                access_token = vkapi.get_access_token_from_url(message)
-
-                sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
-                self._sender.something_is_changed()
-
-                logger.info('wait_for_sender: ' + str(self._wait_for_sender))
-                self._wait_for_sender.remove(user_id)
-
-                self.send_message(user_id, 'Я добавил эту страницу.')
+                self._received_sender_access(data)
 
             elif AdminPage.select().where(AdminPage.vkid == user_id).exists():
                 self.send_message(user_id, self.reply_to_admin(data))
@@ -60,17 +47,7 @@ class BotBase:
                 self._receive_user_response(data)
 
             else:
-                logger.info('Random user sended to me a message.')
-
-                random_query = AdminPage.select().order_by(fn.Random())
-
-                # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
-                # new_user = UserPage.create(vkid=user_id, target_group=tgroup, status='active') # TODO check
-
-                if random_query.exists():
-                    random_admin = random_query.get()
-                    vkapi.forward_messages(random_admin.vkid, token=self._token,
-                                       messages_id=str(data['object']['id']))
+                self._response_random_user(data)
 
         except ManualException as ex:
             vkapi.send_message(user_id=user_id, token=self._token, message=ex.message)
@@ -95,6 +72,35 @@ class BotBase:
                                messages_id=str(data['object']['id']))
 
         user.save()
+
+    def _response_random_user(self, data):
+        logger.info('Random user sended to me a message.')
+
+        random_query = AdminPage.select().order_by(fn.Random())
+
+        # tgroup = TargetGroup.get(TargetGroup.admin_id == random_admin.vkid)
+        # new_user = UserPage.create(vkid=user_id, target_group=tgroup, status='active') # TODO check
+
+        if random_query.exists():
+            random_admin = random_query.get()
+            vkapi.forward_messages(random_admin.vkid, token=self._token,
+                                   messages_id=str(data['object']['id']))
+
+    def _received_sender_access(self, data):
+        logger.info('Sender sended url with access token.')
+
+        user_id = data['object']['user_id']
+        message = data['object']['body']
+
+        access_token = vkapi.get_access_token_from_url(message)
+
+        sender = SenderPage.create(vkid=user_id, token=access_token, message_count=self._sender._message_limit)
+        self._sender.something_is_changed()
+
+        logger.info('wait_for_sender: ' + str(self._wait_for_sender))
+        self._wait_for_sender.remove(user_id)
+
+        self.send_message(user_id, 'Я добавил эту страницу.')
 
     def send_message(self, user_id, message):
         print(message)
