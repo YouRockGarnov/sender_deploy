@@ -3,6 +3,7 @@ from enum import Enum
 from tools import vkapi
 from tools.log import logger
 from datetime import timedelta
+from tools.exceptions import ManualException
 
 class State(Enum):
     stopped = 1
@@ -59,6 +60,10 @@ class Sender:
                 sender = sender_query.get()
 
                 for user in users:
+                    if user.target_group.text == '':
+                        raise ManualException('Вы не поставили текст у группы {0}.'
+                                              .format(str(vkapi.id_to_name(user.target_group.vkid))))
+
                     self.send_message(sender.token, user.vkid, user.target_group.text)
 
                     sender.message_count -= 1

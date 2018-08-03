@@ -104,3 +104,6 @@ def get_access_token_from_url(url):
     except Exception as ex:
         if str(ex).find('list index out of range') != -1:
             raise ManualException('Вы прислали неверную ссылку, попробуйте еще раз.')
+
+def id_to_name(id):
+    return api.groups.getById(group_id=id, access_token=token)[0]['name']

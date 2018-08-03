@@ -1,11 +1,11 @@
-from bots.bot_base import BotBase
+from bots.admin_bot import AdminBot
 import configs.config_vkbot as config
 import tools.vkapi as vkapi
 from tools.log import logger
 from db.mymodels import db_proxy
 
 
-class VKBot(BotBase):
+class VKBot(AdminBot):
     def __init__(self, token):
         super().__init__(token)
         self._message_limit = 20
