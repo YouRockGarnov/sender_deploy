@@ -83,7 +83,7 @@ def get_group_memb(group_id, moderator_token):
 
 
     try:
-        return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['users']
+        return api.groups.getMembers(group_id=group_id, sort='time_desc', access_token=moderator_token)['items']
     except vk.exceptions.VkAPIError as ex:
         if str(ex).find('Access denied: you should be group moderator.') != -1:
             raise ManualException('Отклонено. Вы должны являться модератором сообщества, которое добавляете.')
