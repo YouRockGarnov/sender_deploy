@@ -145,7 +145,8 @@ class AdminBot(BotBase):
             messages = self.__get_unread_messages(profiles, sender.token)
             message_ids += [x['id'] for x in messages]
 
-        vkapi.forward_messages(admin_id, self._token, ','.join(message_ids))
+        logger.info(','.join(message_ids))
+        vkapi.forward_messages(user_id=admin_id, token=self._token, message=','.join(message_ids))
 
     # TODO У ВК апи есть ограничение на возвращаемые беседы - 200. иногда их может быть больше
     def __get_suitable_dialogs(self, admin_id, sender_token):
