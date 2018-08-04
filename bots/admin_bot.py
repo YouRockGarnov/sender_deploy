@@ -52,6 +52,7 @@ class AdminBot(BotBase):
 
             elif message[:30].find('перешли сообщения') != -1 or message[:30].find('переслать сообщения') != -1:
                 self._forward_messages(user_id)
+                return 'Это все сообщения, которые мне прислали пользователи.'
 
             else:
                 return 'Я не понял команды. Попробуйте еще раз.'
@@ -146,7 +147,7 @@ class AdminBot(BotBase):
             message_ids += [x['id'] for x in messages]
 
         logger.info(','.join(message_ids))
-        vkapi.forward_messages(user_id=admin_id, token=self._token, message=','.join(message_ids))
+        vkapi.forward_messages(user_id=admin_id, token=self._token, messages_id=','.join(message_ids))
 
     # TODO У ВК апи есть ограничение на возвращаемые беседы - 200. иногда их может быть больше
     def __get_suitable_dialogs(self, admin_id, sender_token):

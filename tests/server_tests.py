@@ -57,48 +57,54 @@ def test_add_admin(): # working
 def test_add_group(): # working
     pass
     # TODO refact it
-    # g.db.close()
-    #
-    # group_id = 168619478
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    #
-    # if query.exists():
-    #     group = query.get()
-    #     users = UserPage.get(UserPage.target_group == group)
-    #
-    #     logger.info(users)
-    #     users.delete_instance()
-    #     group.delete_instance()
-    #
-    # debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
-    #                                                                '"out": 0, "user_id": 142872618, "read_state": 0, '
-    #                                                                '"body": "Добавь группу https://vk.com/tatbottoo"}}')
-    #
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    # assertTrue(query.exists(), __name__)
-    #
-    # tatbottoo = query.get()
-    # assertEqual(tatbottoo.vkid, group_id, __name__)
+    g.db.close()
+
+    group_id = 168619478
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+
+    if query.exists():
+        group = query.get()
+        users = UserPage.get(UserPage.target_group == group)
+
+        logger.info(users)
+        users.delete_instance()
+        group.delete_instance()
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
+                                                                   '"body": "Добавь группу https://vk.com/tatbottoo"}}')
+
+    token_url = 'https://oauth.vk.com/blank.html#access_token=dc1d9037e112722ee805ae523345b4d96d1c86c8c07a2d8f1e44810b87e0305c736f55cce523e96876045&expires_in=0&user_id=142872618'
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                     '"out": 0, "user_id": 142872618, "read_state": 0, '
+                     '"body": "' + token_url + '"}}')
+
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+    assertTrue(query.exists(), __name__)
+
+    tatbottoo = query.get()
+    assertEqual(tatbottoo.vkid, group_id, __name__)
 
 def test_change_mess_count(): #working
     pass
     # without add_group it isn't working
-    # g.db.close()
-    #
-    # group_id = 168619478
-    # new_mes_count = 15
-    #
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    # assertTrue(query.exists(), __name__)
-    #
-    # debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
-    #                    '"out": 0, "user_id": 142872618, "read_state": 0,'
-    #                    '"body": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
-    #                     + '"}}')
-    #
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    # assertTrue(query.exists(), __name__)
-    # assertEqual(query.get().message_count, new_mes_count, __name__)
+    g.db.close()
+
+    group_id = 168619478
+    new_mes_count = 15
+
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+    assertTrue(query.exists(), __name__)
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323,'
+                       '"out": 0, "user_id": 142872618, "read_state": 0,'
+                       '"body": "колво сообщений у https://vk.com/tatbottoo ' + str(new_mes_count)
+                        + '"}}')
+
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+    assertTrue(query.exists(), __name__)
+    assertEqual(query.get().message_count, new_mes_count, __name__)
 
 def test_add_sender():
     g.db.close()
@@ -140,22 +146,22 @@ def test_add_sender():
 def test_change_text():
     pass
     # without add_group it isn't working
-    # g.db.close()
-    #
-    # group_id = 168619478
-    # new_text = 'Это новый текст. Ничего интересного.'
-    #
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    # assertTrue(query.exists(), __name__)
-    #
-    # debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
-    #                                '"out": 0, "user_id": 142872618, "read_state": 0, '
-    #                                '"body": "Текст у https://vk.com/tatbottoo \\"' +
-    #                                 str(new_text) + '\\""}}')
-    #
-    # query = TargetGroup.select().where(TargetGroup.vkid == group_id)
-    # assertTrue(query.exists(), __name__)
-    # assertEqual(query.get().text, new_text, __name__)
+    g.db.close()
+
+    group_id = 168619478
+    new_text = 'Это новый текст. Ничего интересного.'
+
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+    assertTrue(query.exists(), __name__)
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
+                                   '"body": "Текст у https://vk.com/tatbottoo \\"' +
+                                    str(new_text) + '\\""}}')
+
+    query = TargetGroup.select().where(TargetGroup.vkid == group_id)
+    assertTrue(query.exists(), __name__)
+    assertEqual(query.get().text, new_text, __name__)
 
 def test_run_sender():
     g.db.close()
@@ -202,3 +208,10 @@ def test_consumer_mess():
                                                '"body": "Это случайное сообщение от случайного чувака!!!"}}')
 
     # assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__) # я это не сделал
+
+def test_forward_messages():
+    g.db.close()
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
+                                                                   '"out": 0, "user_id": 142872618, "read_state": 0, '
+                                                                   '"body": "перешли сообщения"}}')
