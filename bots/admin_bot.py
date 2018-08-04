@@ -156,7 +156,7 @@ class AdminBot(BotBase):
         conversations = vkapi.get_unread_conversations(sender_token)
 
         for conversation in conversations:
-            user = UserPage.get(UserPage.vkid == conversation['profile']['id'])
+            user = UserPage.get(UserPage.vkid == int(conversation['profile']['id']))
 
             if user.target_group.admin_id == admin_id:
                 result.append(conversation['profile'])
