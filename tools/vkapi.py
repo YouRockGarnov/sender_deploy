@@ -109,7 +109,7 @@ def id_to_name(id):
     return api.groups.getById(group_id=id, access_token=token)[0]['name']
 
 def get_unread_conversations(sender_token):
-    api.messages.getConversations(access_token=sender_token, count=200, filter='unread')
+    return api.messages.getConversations(access_token=sender_token, count=200, filter='unread')
 
 def get_unread_messages(sender_token, user_dialog_id):
     response = api.messages.getHistory(access_token=sender_token, user_id=user_dialog_id, count=200)
