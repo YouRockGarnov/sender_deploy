@@ -51,7 +51,7 @@ class AdminBot(BotBase):
                 return 'Рассылка остановлена.'
 
             elif message[:30].find('перешли сообщения') != -1 or message[:30].find('переслать сообщения') != -1:
-                self._forward_messages()
+                self._forward_messages(user_id)
 
             else:
                 return 'Я не понял команды. Попробуйте еще раз.'
@@ -135,5 +135,35 @@ class AdminBot(BotBase):
         return 'Перейдите по ссылке и разрешите доступ к странице. ' \
                'После этого необходимо ссылку из браузера скопировать и прислать мне. Ссылка: ' + vkapi.auth_link
 
-    def _forward_messages(self):
-        pass
+    def _forward_messages(self, admin_id):
+        senders = SenderPage.select()
+        message_ids = []
+
+        for sender in senders:
+            profiles = self.__get_suitable_dialogs(admin_id, sender.token)
+
+            messages = self.__get_unread_messages(profiles, sender.token)
+            message_ids += [x['id'] for x in messages]
+
+        vkapi.forward_messages(admin_id, self._token, ','.join(message_ids))
+
+    # TODO У ВК апи есть ограничение на возвращаемые беседы - 200. иногда их может быть больше
+    def __get_suitable_dialogs(self, admin_id, sender_token):
+        # возвращает беседы только с теми людьми, за которых ответственен админ
+        result = []
+
+        conversations = vkapi.get_unread_conversations(sender_token)
+
+        for conversation in conversations:
+            user = UserPage.get(UserPage.vkid == conversation['profile']['id'])
+
+            if user.target_group.admin_id == admin_id:
+                result.append(conversation['profile'])
+
+        return result
+
+    def __get_unread_messages(self, profiles, sender_token):
+        import functools
+        return functools.reduce(lambda x,y: x+y,
+                                [vkapi.get_unread_messages(sender_token=sender_token, user_dialog_id=profile)
+                                 for profile in profiles])

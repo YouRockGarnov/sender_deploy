@@ -6,7 +6,7 @@ from configs.config_vkbot import token
 import vk.exceptions
 
 session = vk.Session()
-api = vk.API(session, v=5.0)
+api = vk.API(session, v=5.74)
 
 sended_message = ''
 
@@ -107,3 +107,12 @@ def get_access_token_from_url(url):
 
 def id_to_name(id):
     return api.groups.getById(group_id=id, access_token=token)[0]['name']
+
+def get_unread_conversations(sender_token):
+    api.messages.getConversations(access_token=sender_token, count=200, filter='unread')
+
+def get_unread_messages(sender_token, user_dialog_id):
+    response = api.messages.getHistory(access_token=sender_token, user_id=user_dialog_id, count=200)
+    unread_messages = response['items'][:response['unread']]
+
+    return unread_messages

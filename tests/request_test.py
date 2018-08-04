@@ -197,3 +197,6 @@ def test_consumer_mess():
                                                '"body": "Это случайное сообщение от случайного чувака!!!"}}')
 
     assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__)
+
+def test_forward_mess():
+    g.db.close()
