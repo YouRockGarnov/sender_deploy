@@ -8,8 +8,8 @@ from tools.debug import setDEBUG
 
 @app.route('/test', methods=['GET'])
 def test():
-    # for i in dir(tests):
-    #     item = getattr(tests,i)
+    # for i in dir(all_tests):
+    #     item = getattr(all_tests,i)
     #     if callable(item):
     #         item()
 
@@ -24,5 +24,5 @@ def test():
             print(repr(item))
             item()
 
-    logger.info('All tests are passed!')
+    logger.info('All all_tests are passed!')
     return 'ok'

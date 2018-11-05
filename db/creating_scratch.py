@@ -4,7 +4,7 @@ from db.mymodels import db_proxy
 
 def init_db():
     import os
-    if ('HEROKU' in os.environ):
+    if ('DYNO' in os.environ):
         import urllib.parse as urlparse, psycopg2, os
         urlparse.uses_netloc.append('postgres')
         url = urlparse.urlparse(os.environ["DATABASE_URL"])
@@ -17,7 +17,7 @@ def init_db():
 
 def create_db():
     import os
-    if not ('HEROKU' in os.environ):
+    if not ('DYNO' in os.environ):
         db = SqliteDatabase('../sender.sqlite')
         db.connect(True)
 

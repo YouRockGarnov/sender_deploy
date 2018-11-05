@@ -8,6 +8,7 @@ from flask import g
 import requests
 from tools.log import logger
 from configs.config_vkbot import main_url
+from tools.log import logged
 
 def assertTrue(expr, funcname):
     if not expr:
@@ -26,6 +27,7 @@ def make_req(message):
         logger.error('POST request to {0} with message = {1} returned {2}.'.format(main_url, message, response))
         exit(1)
 
+@logged
 def test_not_command_mes():
     g.db.close()
 
@@ -36,6 +38,7 @@ def test_not_command_mes():
 
     assertEqual(vkapi.sended_message, 'Я не понял команды. Попробуйте еще раз.', __name__)
 
+@logged
 def test_add_admin(): # working
     g.db.close()
 
@@ -54,6 +57,7 @@ def test_add_admin(): # working
     yuri = query.get()
     assertEqual(yuri.vkid, 481116745, __name__)
 
+@logged
 def test_add_group(): # working
     pass
     # TODO refact it
@@ -86,6 +90,7 @@ def test_add_group(): # working
     tatbottoo = query.get()
     assertEqual(tatbottoo.vkid, group_id, __name__)
 
+@logged
 def test_change_mess_count(): #working
     pass
     # without add_group it isn't working
@@ -106,6 +111,7 @@ def test_change_mess_count(): #working
     assertTrue(query.exists(), __name__)
     assertEqual(query.get().message_count, new_mes_count, __name__)
 
+@logged
 def test_add_sender():
     g.db.close()
 
@@ -141,8 +147,8 @@ def test_add_sender():
 
     sender = query.get()
     assertEqual(sender.vkid, sender_id, __name__)
-    sender.delete_instance()
 
+@logged
 def test_change_text():
     pass
     # without add_group it isn't working
@@ -163,6 +169,7 @@ def test_change_text():
     assertTrue(query.exists(), __name__)
     assertEqual(query.get().text, new_text, __name__)
 
+@logged
 def test_run_sender():
     g.db.close()
 
@@ -178,24 +185,24 @@ def test_run_sender():
 
     assertEqual(vkbot_main.vkbot._sender._state, State.waiting, __name__)
 
-
+@logged
 def test_consumer_reply():
-    pass
     # without add_group it isn't working
-    # g.db.close()
-    #
-    # user = 'id280679710'
-    # user_id = vkapi.to_vkid(user)
-    #
-    # time.sleep(1)
-    #
-    # debug_processing('{"type": "message_new", "object": {"id": 43, "date": 280679710, '
-    #                            '"out": 0, "user_id": ' + str(user_id) + ', "read_state": 0, '
-    #                            '"body": "Ну окей, меня заинтересовал ваш тату-салон."}}')
-    #
-    # user_page = UserPage.get(UserPage.vkid == user_id)
-    # assertEqual(user_page.status, 'active', __name__)
+    g.db.close()
 
+    user = 'id280679710'
+    user_id = vkapi.to_vkid(user)
+
+    time.sleep(1)
+
+    debug_processing('{"type": "message_new", "object": {"id": 43, "date": 280679710, '
+                               '"out": 0, "user_id": ' + str(user_id) + ', "read_state": 0, '
+                               '"body": "Ну окей, меня заинтересовал ваш тату-салон."}}')
+
+    user_page = UserPage.get(UserPage.vkid == user_id)
+    assertEqual(user_page.status, 'active', __name__)
+
+@logged
 def test_consumer_mess():
     g.db.close()
 
@@ -209,9 +216,18 @@ def test_consumer_mess():
 
     # assertTrue(UserPage.select().where(UserPage.vkid == consumer_id).exists(), __name__) # я это не сделал
 
+@logged
 def test_forward_messages():
     g.db.close()
 
     debug_processing('{"type": "message_new", "object": {"id": 43, "date": 1492522323, '
                                                                    '"out": 0, "user_id": 142872618, "read_state": 0, '
                                                                    '"body": "перешли сообщения"}}')
+
+@logged
+def delete_test_instances():
+    sender = 'patlin'
+    sender_id = vkapi.to_vkid(sender)
+
+    sender = SenderPage.get(SenderPage.vkid == sender_id)
+    sender.delete_instance()

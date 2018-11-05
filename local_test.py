@@ -14,21 +14,30 @@ def test():
         g.db = db_proxy
         g.db.connect()
 
-        import tests.server_tests as tests
+        import all_tests.server_tests as tests
 
         g.db.drop_tables([AdminPage, TargetGroup, UserPage, SenderPage], safe=True) # TODO delete it
         create_db()
 
-        for i in dir(tests):
-            item = getattr(tests,i)
-            if callable(item) and repr(item).find('test_') != -1:
-                print('Test' + repr(item) + ' started!')
-                item()
+        tests.test_add_admin()
+        tests.test_add_group()
+        tests.test_add_sender()
 
-                print('Test' + repr(item) + ' ended!')
+        tests.test_change_mess_count()
+        tests.test_change_text()
+        tests.test_run_sender()
 
-        logger.info('All tests are passed!')
+        tests.test_consumer_reply()
+        tests.test_forward_messages()
+
+        tests.test_consumer_mess()
+        tests.test_not_command_mes()
+
+
+        logger.info('All all_tests are passed!')
         return 'ok'
+
+
 
 import os
 if not ('HEROKU' in os.environ):
