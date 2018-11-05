@@ -37,5 +37,5 @@ def notify():
     if ('y' == input()):
         print(requests.post('https://todoistvkbot.herokuapp.com/notify_all', data=json.dumps({"message": message, "keyboard":keyboard})))
 
-create_db()
+# create_db()
 print(requests.get('https://tattoo-release.herokuapp.com/setDEBUG_False'))
