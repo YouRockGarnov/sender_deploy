@@ -1,7 +1,8 @@
 from flask import request
 from tools.debug import getDEBUG
-from tools.log import logger
+from tools.log import logger, logged
 
+@logged
 def get_token():
     if getDEBUG():
         logger.info('DEBUG = True')
