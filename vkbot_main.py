@@ -54,7 +54,7 @@ def processing():
     if debug_module.getDEBUG():
         logger.info('Run in debug.')
 
-    logger.info('URL: {0}'.format(os.environ['URL']))
+    logger.info('URL: {0}'.format(request.url_root))
     logger.info('in processing')
 
     bindata = request.data
