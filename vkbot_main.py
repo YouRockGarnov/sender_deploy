@@ -2,7 +2,6 @@ from flask import json, request
 from configs.config_vkbot import *
 from bots.vkbot import VKBot
 from tools.log import logger
-from configs.config_vkbot import token
 from db.mymodels import db_proxy
 import db.creating_scratch as creating_scratch
 from db.creating_scratch import init_db
@@ -11,7 +10,7 @@ from flask import g
 import tools.debug as debug_module
 from main_test import test
 
-vkbot = VKBot(token)
+vkbot = VKBot(get_token())
 
 @app.before_request
 def before_request():

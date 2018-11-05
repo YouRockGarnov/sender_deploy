@@ -2,7 +2,7 @@ import vk
 from tools.debug import getDEBUG
 from tools.exceptions import ManualException
 from tools.log import logger, logged
-from configs.config_vkbot import token
+from configs.config_vkbot import get_token
 import vk.exceptions
 
 session = vk.Session()
@@ -61,7 +61,7 @@ def to_vkid(scr_name):
 
     print(scr_name)
 
-    response = api.utils.resolveScreenName(screen_name=scr_name, access_token=token)
+    response = api.utils.resolveScreenName(screen_name=scr_name, access_token=get_token())
 
     if response == []:
         raise ManualException('Кажется вы дали неверную ссылку, я не нашел такого пользователя!')
@@ -106,7 +106,7 @@ def get_access_token_from_url(url):
             raise ManualException('Вы прислали неверную ссылку, попробуйте еще раз.')
 
 def id_to_name(id):
-    return api.groups.getById(group_id=id, access_token=token)[0]['name']
+    return api.groups.getById(group_id=id, access_token=get_token())[0]['name']
 
 def get_unread_conversations(sender_token):
     return api.messages.getConversations(access_token=sender_token, count=200, filter='unread')
