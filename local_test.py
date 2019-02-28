@@ -7,7 +7,6 @@ from tools.debug import setDEBUG
 from db.creating_scratch import init_db
 from db.mymodels import db_proxy
 
-
 def test():
     with app.app_context():
         init_db()

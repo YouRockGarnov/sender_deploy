@@ -1,7 +1,6 @@
 from configs.config_vkbot import confirmation_token
 from db.mymodels import db_proxy
 from tools.log import logger
-from vkbot_main import vkbot
 import json
 
 def debug_processing(strdata):

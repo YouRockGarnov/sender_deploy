@@ -1,0 +1,5 @@
+requests.get('https://tattoo-sender.herokuapp.com/create_db', '')
+requests.get('https://tattoo-sender.herokuapp.com/test', '')
+requests.get('https://tattoo-sender.herokuapp.com/setDEBUG_False', '')
+requests.get('https://tattoo-sender.herokuapp.com/getDEBUG_Flag', '')
+heroku logs -a tattoo-sender

@@ -10,10 +10,14 @@ from flask import g
 import tools.debug as debug_module
 from main_test import test
 
-vkbot = VKBot(get_token())
+vkbot = None
 
 @app.before_request
 def before_request():
+    global vkbot
+    if vkbot == None:
+        vkbot = VKBot(get_token())
+
     init_db()
     g.db = db_proxy
     g.db.connect()
